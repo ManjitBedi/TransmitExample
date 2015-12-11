@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="51u-cR-zeu">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="6Vg-do-ENE">
+            <objects>
+                <navigationController id="51u-cR-zeu" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PkD-qM-50j">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="T88-Em-qzK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vf9-lu-Hgr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-949" y="194"/>
+        </scene>
+        <!--Pulse demo-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Pulse" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +32,156 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vrP-SD-HCD">
+                                <rect key="frame" x="197" y="118" width="206" height="211"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMA-jF-m9E">
+                                        <rect key="frame" x="0.0" y="0.0" width="206" height="57"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="37"/>
+                                        <state key="normal" title="Start Demo">
+                                            <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startDemo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bJF-Is-UKa"/>
+                                            <segue destination="to9-e3-eiy" kind="show" id="aWJ-no-eGV"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDa-dx-3Ly">
+                                        <rect key="frame" x="0.0" y="77" width="206" height="57"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="37"/>
+                                        <state key="normal" title="Select Video">
+                                            <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="selectVideo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nma-Au-5hm"/>
+                                            <segue destination="SSW-f2-HcW" kind="show" id="jt6-LM-KQK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xsl-0P-6iF">
+                                        <rect key="frame" x="0.0" y="154" width="206" height="57"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="37"/>
+                                        <state key="normal" title="Connectivity">
+                                            <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="connectivity:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gVr-cW-HFB"/>
+                                            <segue destination="gOb-2Q-pHU" kind="show" id="6b5-DF-x2d"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZOG-ho-FCz">
+                                <rect key="frame" x="180" y="422" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="Knl-y8-Yhc"/>
+                                    <constraint firstAttribute="height" constant="128" id="Yfp-OO-YJM"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ZOG-ho-FCz" secondAttribute="bottom" constant="50" id="Krq-GN-Suf"/>
+                            <constraint firstItem="ZOG-ho-FCz" firstAttribute="centerX" secondItem="vrP-SD-HCD" secondAttribute="centerX" id="RR6-FY-crt"/>
+                            <constraint firstItem="vrP-SD-HCD" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="54" id="YOd-KA-kcF"/>
+                            <constraint firstItem="ZOG-ho-FCz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="asM-4p-QOL"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Pulse demo" id="xbe-gi-K6g"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-127" y="194"/>
+        </scene>
+        <!--Select Video-->
+        <scene sceneID="Ez7-Yr-fqs">
+            <objects>
+                <viewController id="SSW-f2-HcW" customClass="VideoSelectViewController" customModule="Pulse" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="uTZ-Yo-oaw"/>
+                        <viewControllerLayoutGuide type="bottom" id="WyX-r6-qCC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fBf-Am-b1X">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="selected video: _" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGU-7s-4IL">
+                                <rect key="frame" x="236" y="82" width="128" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bqk-Ne-fCV">
+                                <rect key="frame" x="0.0" y="172" width="600" height="428"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="zGU-7s-4IL" firstAttribute="top" secondItem="uTZ-Yo-oaw" secondAttribute="bottom" constant="18" id="921-LX-mCx"/>
+                            <constraint firstItem="zGU-7s-4IL" firstAttribute="centerX" secondItem="fBf-Am-b1X" secondAttribute="centerX" id="ksk-dX-dXt"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Select Video" id="SvW-Ga-7DK"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8jB-qi-IDJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="600" y="518"/>
+        </scene>
+        <!--Mulitpeer Connectivity-->
+        <scene sceneID="UO8-7h-IzD">
+            <objects>
+                <viewController id="gOb-2Q-pHU" customClass="MultiPeerViewController" customModule="Pulse" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TAi-nM-Wh1"/>
+                        <viewControllerLayoutGuide type="bottom" id="1X1-T9-TFA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ktq-PC-yVD">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Mulitpeer Connectivity" id="BxY-bK-8nw"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5W1-1u-GFZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="300" y="1262"/>
+        </scene>
+        <!--Demo-->
+        <scene sceneID="F2k-Hs-6EZ">
+            <objects>
+                <viewController id="to9-e3-eiy" customClass="DemoViewController" customModule="Pulse" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5Zn-jT-KHd"/>
+                        <viewControllerLayoutGuide type="bottom" id="EZN-l8-nqj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LeJ-5Z-zbl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZB-lv-Pdv">
+                                <rect key="frame" x="283" y="84" width="34" height="30"/>
+                                <state key="normal" title="Start"/>
+                                <connections>
+                                    <action selector="showBrowser:" destination="to9-e3-eiy" eventType="touchUpInside" id="K7T-Cg-Xd7"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZZB-lv-Pdv" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="20" id="Pwk-cH-4B1"/>
+                            <constraint firstItem="ZZB-lv-Pdv" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="kTx-wI-3on"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Demo" id="Gez-dv-MgZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wpt-Kn-Jwx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="600" y="-174"/>
         </scene>
     </scenes>
 </document>
