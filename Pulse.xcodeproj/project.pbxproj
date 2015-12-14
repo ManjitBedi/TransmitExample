@@ -18,6 +18,7 @@
 		781CB4641C1A32AC0010CC55 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781CB4631C1A32AC0010CC55 /* ModelManager.swift */; };
 		781CB4661C1A32C90010CC55 /* VideoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781CB4651C1A32C90010CC55 /* VideoDataModel.swift */; };
 		786BF92F1C1B65D900F4D2AE /* bb_minnie_the_moocher_512kb.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 786BF92E1C1B65D900F4D2AE /* bb_minnie_the_moocher_512kb.mp4 */; };
+		78AA61CB1C1F500200895070 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA61CA1C1F500200895070 /* ConnectionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		781CB4631C1A32AC0010CC55 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 		781CB4651C1A32C90010CC55 /* VideoDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoDataModel.swift; sourceTree = "<group>"; };
 		786BF92E1C1B65D900F4D2AE /* bb_minnie_the_moocher_512kb.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = bb_minnie_the_moocher_512kb.mp4; path = Pulse/Media/bb_minnie_the_moocher_512kb.mp4; sourceTree = "<group>"; };
+		78AA61CA1C1F500200895070 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				781CB44D1C1A0FF00010CC55 /* MainViewController.swift */,
 				781CB45F1C1A266C0010CC55 /* VideoSelectViewController.swift */,
 				781CB45D1C1A264E0010CC55 /* MultiPeerViewController.swift */,
+				78AA61CA1C1F500200895070 /* ConnectionManager.swift */,
 				781CB44F1C1A0FF00010CC55 /* Main.storyboard */,
 				781CB4521C1A0FF00010CC55 /* Assets.xcassets */,
 				781CB4541C1A0FF00010CC55 /* LaunchScreen.storyboard */,
@@ -167,6 +170,7 @@
 				781CB45E1C1A264E0010CC55 /* MultiPeerViewController.swift in Sources */,
 				781CB44E1C1A0FF00010CC55 /* MainViewController.swift in Sources */,
 				781CB44C1C1A0FF00010CC55 /* AppDelegate.swift in Sources */,
+				78AA61CB1C1F500200895070 /* ConnectionManager.swift in Sources */,
 				781CB4621C1A27560010CC55 /* DemoViewController.swift in Sources */,
 				781CB4641C1A32AC0010CC55 /* ModelManager.swift in Sources */,
 			);

@@ -143,7 +143,29 @@
                     <view key="view" contentMode="scaleToFill" id="Ktq-PC-yVD">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGf-kc-iZY">
+                                <rect key="frame" x="243" y="77" width="114" height="30"/>
+                                <state key="normal" title="Search for peers"/>
+                                <connections>
+                                    <action selector="showBrowser:" destination="gOb-2Q-pHU" eventType="touchUpInside" id="JmP-cn-UeZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ln-OE-0un">
+                                <rect key="frame" x="258.5" y="124" width="83" height="30"/>
+                                <state key="normal" title="Send nudge"/>
+                                <connections>
+                                    <action selector="sendNudge" destination="gOb-2Q-pHU" eventType="touchUpInside" id="d29-Zc-oFT"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9ln-OE-0un" firstAttribute="centerX" secondItem="Ktq-PC-yVD" secondAttribute="centerX" id="9PF-XM-IaG"/>
+                            <constraint firstItem="IGf-kc-iZY" firstAttribute="centerX" secondItem="Ktq-PC-yVD" secondAttribute="centerX" id="A8W-6r-dQW"/>
+                            <constraint firstItem="IGf-kc-iZY" firstAttribute="top" secondItem="TAi-nM-Wh1" secondAttribute="bottom" constant="13" id="DzB-vq-h7z"/>
+                            <constraint firstItem="9ln-OE-0un" firstAttribute="top" secondItem="IGf-kc-iZY" secondAttribute="bottom" constant="17" id="cq0-pe-q7n"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Mulitpeer Connectivity" id="BxY-bK-8nw"/>
                 </viewController>
