@@ -19,7 +19,6 @@
 		781CB4661C1A32C90010CC55 /* VideoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781CB4651C1A32C90010CC55 /* VideoDataModel.swift */; };
 		786BD3811C208A7900B889FB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786BD3801C208A7900B889FB /* Constants.swift */; };
 		786BD3831C20936500B889FB /* TimeCodeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786BD3821C20936500B889FB /* TimeCodeTableViewController.swift */; };
-		786BD3851C20937F00B889FB /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786BD3841C20937F00B889FB /* FilesTableViewController.swift */; };
 		786BF92F1C1B65D900F4D2AE /* video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 786BF92E1C1B65D900F4D2AE /* video.mp4 */; };
 		78AA61CB1C1F500200895070 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA61CA1C1F500200895070 /* ConnectionManager.swift */; };
 		78EBD30E1C1F966E00DDDA16 /* video.txt in Resources */ = {isa = PBXBuildFile; fileRef = 78EBD30D1C1F966E00DDDA16 /* video.txt */; };
@@ -40,7 +39,6 @@
 		781CB4651C1A32C90010CC55 /* VideoDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoDataModel.swift; sourceTree = "<group>"; };
 		786BD3801C208A7900B889FB /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		786BD3821C20936500B889FB /* TimeCodeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCodeTableViewController.swift; sourceTree = "<group>"; };
-		786BD3841C20937F00B889FB /* FilesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesTableViewController.swift; sourceTree = "<group>"; };
 		786BF92E1C1B65D900F4D2AE /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = video.mp4; path = Pulse/Media/video.mp4; sourceTree = "<group>"; };
 		78AA61CA1C1F500200895070 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		78EBD30D1C1F966E00DDDA16 /* video.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = video.txt; path = Pulse/Media/video.txt; sourceTree = "<group>"; };
@@ -87,7 +85,6 @@
 				781CB45D1C1A264E0010CC55 /* MultiPeerViewController.swift */,
 				78AA61CA1C1F500200895070 /* ConnectionManager.swift */,
 				786BD3821C20936500B889FB /* TimeCodeTableViewController.swift */,
-				786BD3841C20937F00B889FB /* FilesTableViewController.swift */,
 				781CB44F1C1A0FF00010CC55 /* Main.storyboard */,
 				781CB4521C1A0FF00010CC55 /* Assets.xcassets */,
 				781CB4541C1A0FF00010CC55 /* LaunchScreen.storyboard */,
@@ -186,7 +183,6 @@
 				786BD3831C20936500B889FB /* TimeCodeTableViewController.swift in Sources */,
 				781CB44C1C1A0FF00010CC55 /* AppDelegate.swift in Sources */,
 				78AA61CB1C1F500200895070 /* ConnectionManager.swift in Sources */,
-				786BD3851C20937F00B889FB /* FilesTableViewController.swift in Sources */,
 				781CB4621C1A27560010CC55 /* DemoViewController.swift in Sources */,
 				781CB4641C1A32AC0010CC55 /* ModelManager.swift in Sources */,
 			);

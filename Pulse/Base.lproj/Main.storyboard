@@ -109,8 +109,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="selected video: _" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGU-7s-4IL">
-                                <rect key="frame" x="236" y="82" width="128" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGU-7s-4IL">
+                                <rect key="frame" x="236" y="82" width="128" height="0.0"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="128" id="11F-Uf-a1T"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -175,6 +178,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Select Video" id="SvW-Ga-7DK"/>
                     <connections>
+                        <outlet property="selectedMediaLabel" destination="zGU-7s-4IL" id="Kdi-2E-yFa"/>
                         <outlet property="tableView" destination="Bqk-Ne-fCV" id="Uhl-pa-qro"/>
                     </connections>
                 </viewController>

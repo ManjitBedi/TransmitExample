@@ -19,9 +19,21 @@ class DemoViewController: UIViewController {
     var syncData : NSString = ""
     var syncArray : [NSString] = []
     var times : [NSValue] = []
+    var urlString : NSString = ""
+    var videoPath : String = ""
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
+            urlString = temp
+            videoPath = urlString as String
+            print(urlString)
+        } else {
+            let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4")
+            videoPath = path! as String
+        }
         
         readInSyncData()
         
@@ -34,11 +46,14 @@ class DemoViewController: UIViewController {
     }
     
     private func readInSyncData() {
-        let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"txt")
+        
+        let path : String = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
+        
+        //let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"txt")
         
         // read in the text file
         do {
-            syncData = try NSString(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+            syncData = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
             syncArray = syncData.componentsSeparatedByString("\n")
             
             let tempArray = NSMutableArray()
@@ -53,19 +68,21 @@ class DemoViewController: UIViewController {
             self.times = tempArray as NSArray as! [NSValue]
             
         }
-        catch {/* error handling here */}
+        catch {
+            print("could not open text file")
+        }
     }
     
-    private func playVideo() throws {
-        guard let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4") else {
-            throw AppError.InvalidResource(PulseConstants.Media.defaultVideoName, "mp4")
-        }
+    private func playVideo(path: String) {
+        
         player = AVPlayer(URL: NSURL(fileURLWithPath: path))
         let playerController = AVPlayerViewController()
         playerController.player = player
         
         // Create time sychronized events
-        createSyncEvents(player)
+        if (self.times.count > 0) {
+            createSyncEvents(player)
+        }
         
         self.presentViewController(playerController, animated: true) {
             self.player.play()
@@ -81,13 +98,7 @@ class DemoViewController: UIViewController {
     
     
     @IBAction func showBrowser(sender: UIButton)  {
-        do {
-            try playVideo()
-        } catch AppError.InvalidResource(let name, let type) {
-            debugPrint("Could not find resource \(name).\(type)")
-        } catch {
-            debugPrint("Generic error")
-        }
+        playVideo(videoPath)
     }
 }
 
