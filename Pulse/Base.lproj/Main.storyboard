@@ -152,22 +152,52 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ln-OE-0un">
-                                <rect key="frame" x="258.5" y="124" width="83" height="30"/>
+                                <rect key="frame" x="259" y="124" width="83" height="30"/>
                                 <state key="normal" title="Send nudge"/>
                                 <connections>
                                     <action selector="sendNudge" destination="gOb-2Q-pHU" eventType="touchUpInside" id="d29-Zc-oFT"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddb-1Q-qey">
+                                <rect key="frame" x="180" y="174" width="240" height="142"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="QtY-D5-fvx"/>
+                                </constraints>
+                                <string key="text">Tap "Search for peers" on all the devices being used in the demo.  There can be a total of 8 devices connected using BlueTooth or the same WiFi network.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Yyc-Kd-3tE">
+                                <rect key="frame" x="180" y="335" width="240" height="252"/>
+                                <color key="backgroundColor" red="0.75294119120000003" green="0.92941176889999999" blue="0.99607843159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="F4i-WF-SEO"/>
+                                    <constraint firstAttribute="height" constant="252" id="pyX-Sm-xbM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9ln-OE-0un" firstAttribute="centerX" secondItem="Ktq-PC-yVD" secondAttribute="centerX" id="9PF-XM-IaG"/>
                             <constraint firstItem="IGf-kc-iZY" firstAttribute="centerX" secondItem="Ktq-PC-yVD" secondAttribute="centerX" id="A8W-6r-dQW"/>
+                            <constraint firstItem="1X1-T9-TFA" firstAttribute="top" secondItem="Yyc-Kd-3tE" secondAttribute="bottom" constant="13" id="AHO-Nn-QJJ"/>
                             <constraint firstItem="IGf-kc-iZY" firstAttribute="top" secondItem="TAi-nM-Wh1" secondAttribute="bottom" constant="13" id="DzB-vq-h7z"/>
+                            <constraint firstItem="Yyc-Kd-3tE" firstAttribute="centerX" secondItem="Ktq-PC-yVD" secondAttribute="centerX" id="UdK-p5-DDu"/>
+                            <constraint firstItem="Ddb-1Q-qey" firstAttribute="centerX" secondItem="Ktq-PC-yVD" secondAttribute="centerX" id="aDh-pR-axU"/>
                             <constraint firstItem="9ln-OE-0un" firstAttribute="top" secondItem="IGf-kc-iZY" secondAttribute="bottom" constant="17" id="cq0-pe-q7n"/>
+                            <constraint firstItem="Yyc-Kd-3tE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Ddb-1Q-qey" secondAttribute="bottom" constant="19" id="hmG-ql-rHZ"/>
+                            <constraint firstItem="Ddb-1Q-qey" firstAttribute="top" secondItem="9ln-OE-0un" secondAttribute="bottom" constant="20" id="tXG-ax-smC"/>
+                            <constraint firstItem="1X1-T9-TFA" firstAttribute="top" secondItem="Ddb-1Q-qey" secondAttribute="bottom" constant="284" id="tqO-7P-pXU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Mulitpeer Connectivity" id="BxY-bK-8nw"/>
+                    <connections>
+                        <outlet property="peersTextView" destination="Yyc-Kd-3tE" id="xBe-Ic-qSh"/>
+                        <outlet property="sendNudgeButton" destination="9ln-OE-0un" id="6Tf-zP-tJy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5W1-1u-GFZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -192,14 +222,25 @@
                                     <action selector="showBrowser:" destination="to9-e3-eiy" eventType="touchUpInside" id="K7T-Cg-Xd7"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="connections 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5t-6e-hXN">
+                                <rect key="frame" x="246" y="559" width="109" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="EZN-l8-nqj" firstAttribute="top" secondItem="a5t-6e-hXN" secondAttribute="bottom" constant="20" id="0TX-AF-Z18"/>
+                            <constraint firstItem="a5t-6e-hXN" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="9iH-Bx-qf9"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="20" id="Pwk-cH-4B1"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="kTx-wI-3on"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Demo" id="Gez-dv-MgZ"/>
+                    <connections>
+                        <outlet property="connectionsLabel" destination="a5t-6e-hXN" id="kCi-Nm-gXQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wpt-Kn-Jwx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
