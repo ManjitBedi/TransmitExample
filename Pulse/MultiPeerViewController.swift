@@ -10,14 +10,16 @@ import UIKit
 import MultipeerConnectivity
 import AudioToolbox
 
-class MultiPeerViewController: UIViewController {
+class MultiPeerViewController: UIViewController, ConnectionManagerDelegate {
         
     
-    @IBOutlet weak var sendNudgetButton: UIButton!
-    weak var connecitonManager = ConnectionManager.sharedManager
+    @IBOutlet weak var sendNudgeButton: UIButton!
+    weak var connectionManager = ConnectionManager.sharedManager
     
+    @IBOutlet weak var peersTextView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.connectionManager!.delegate = self;
     }
     
     override func didReceiveMemoryWarning() {
@@ -27,21 +29,21 @@ class MultiPeerViewController: UIViewController {
 
     @IBAction func showBrowser(sender: UIButton) {
         // Show the browser view controller
-        self.connecitonManager?.showBrowser(self)
+        self.connectionManager?.showBrowser(self)
     }
         
     @IBAction func sendNudge() {
-        let session = self.connecitonManager?.session
-        
-        guard let peers: [MCPeerID]? = session?.connectedPeers else { return }
-            
-        let command = "nudge"
-        let data : NSData = command.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
-            
-        do {
-            try session?.sendData(data, toPeers: peers!, withMode: .Reliable)
-        } catch _ {
-            print("session error")
+        self.connectionManager!.broadcastEvent()
+    }
+    
+    // MARK: delegate methods
+    func connected(connectionManager: ConnectionManager) {
+        if let session = self.connectionManager?.session {
+            self.sendNudgeButton?.enabled = true
+            self.peersTextView.text = session.connectedPeers.description
+        } else {
+            self.sendNudgeButton?.enabled = false
+            self.peersTextView.text = ""
         }
     }
 }

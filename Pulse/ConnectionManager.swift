@@ -10,11 +10,15 @@ import UIKit
 import MultipeerConnectivity
 import AudioToolbox
 
+protocol ConnectionManagerDelegate {
+    func connected(connectionManager: ConnectionManager)
+}
+
 class ConnectionManager: NSObject, MCBrowserViewControllerDelegate, MCSessionDelegate {
     static let sharedManager = ConnectionManager()
     
     let serviceType = "Pulse-Demo"
-    
+    var delegate : ConnectionManagerDelegate?
     var browser : MCBrowserViewController!
     var assistant : MCAdvertiserAssistant!
     var session : MCSession!
@@ -44,6 +48,18 @@ class ConnectionManager: NSObject, MCBrowserViewControllerDelegate, MCSessionDel
         viewController.presentViewController(self.browser, animated: true, completion: nil)
     }
     
+    func broadcastEvent () {
+        guard let peers: [MCPeerID]? = session?.connectedPeers else { return }
+        
+        let command = "nudge"
+        let data : NSData = command.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+        
+        do {
+            try session?.sendData(data, toPeers: peers!, withMode: .Reliable)
+        } catch _ {
+            print("session error")
+        }
+    }
     
     // MARK: - delegate methods
     func browserViewControllerDidFinish( browserViewController: MCBrowserViewController)  {
@@ -51,9 +67,9 @@ class ConnectionManager: NSObject, MCBrowserViewControllerDelegate, MCSessionDel
         
         // Check the number of connections
         if (self.session.connectedPeers.count > 0) {
-            
+            delegate?.connected(self)
         } else {
-            
+            print("no peers connected?")
         }
     }
     
@@ -69,8 +85,7 @@ class ConnectionManager: NSObject, MCBrowserViewControllerDelegate, MCSessionDel
             // Called when a peer starts sending a file to us
     }
     
-    func session(session: MCSession, didReceiveData data: NSData,
-        fromPeer peerID: MCPeerID)  {
+    func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID)  {
             // This needs to run on the main queue
             dispatch_async(dispatch_get_main_queue()) {
                 AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
@@ -78,21 +93,15 @@ class ConnectionManager: NSObject, MCBrowserViewControllerDelegate, MCSessionDel
     }
     
     
-    func session(session: MCSession,
-        didFinishReceivingResourceWithName resourceName: String,
-        fromPeer peerID: MCPeerID,
-        atURL localURL: NSURL, withError error: NSError?)  {
+    func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?)  {
             // Called when a file has finished transferring from another peer
     }
     
-    func session(session: MCSession, didReceiveStream stream: NSInputStream,
-        withName streamName: String, fromPeer peerID: MCPeerID)  {
+    func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID)  {
             // Called when a peer establishes a stream with us
     }
     
-    func session(session: MCSession, peer peerID: MCPeerID,
-        didChangeState state: MCSessionState)  {
+    func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState)  {
             // Called when a connected peer changes state (for example, goes offline)
-            
     }
 }
