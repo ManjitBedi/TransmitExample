@@ -9,6 +9,7 @@
 import UIKit
 import AVKit
 import AVFoundation
+import CoreMedia
 
 class DemoViewController: UIViewController {
 
@@ -18,6 +19,7 @@ class DemoViewController: UIViewController {
     var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
     var syncArray : [NSString] = []
+    var times : [NSValue] = []
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -39,6 +41,20 @@ class DemoViewController: UIViewController {
         do {
             syncData = try NSString(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
             syncArray = syncData.componentsSeparatedByString("\n")
+            
+            let tempArray = NSMutableArray()
+            
+            // convert the strings to time and then encode the times as an NSValue to then add
+            // to an array of time values
+            for timeString in syncArray {
+                let time = timeString.longLongValue
+                let cmTime  = CMTimeMake(time, 1)
+                let cmValue = NSValue(CMTime: cmTime)
+                tempArray.addObject(cmValue)
+            }
+            
+            self.times = tempArray as NSArray as! [NSValue]
+            
         }
         catch {/* error handling here */}
     }
@@ -60,9 +76,10 @@ class DemoViewController: UIViewController {
     }
     
     private func createSyncEvents(player: AVPlayer) {
-        for time in syncArray {
-            print ("time \(time)")
-        }
+        player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: {
+                print("sync event");
+                self.connectionManager!.broadcastEvent()
+            })
     }
     
     
