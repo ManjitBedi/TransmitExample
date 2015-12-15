@@ -10,6 +10,8 @@ import UIKit
 
 class VideoSelectViewController: UIViewController {
 
+    weak var connectionManager = ConnectionManager.sharedManager
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
