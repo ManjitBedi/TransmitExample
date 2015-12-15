@@ -15,6 +15,7 @@ class DemoViewController: UIViewController {
     weak var connectionManager: ConnectionManager?
     @IBOutlet weak var connectionsLabel: UILabel!
     let defaultMovieName = "bb_minnie_the_moocher_512kb"
+    var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
     var syncArray : [NSString] = []
     
@@ -46,19 +47,19 @@ class DemoViewController: UIViewController {
         guard let path = NSBundle.mainBundle().pathForResource(defaultMovieName, ofType:"mp4") else {
             throw AppError.InvalidResource(defaultMovieName, "mp4")
         }
-        let player = AVPlayer(URL: NSURL(fileURLWithPath: path))
+        player = AVPlayer(URL: NSURL(fileURLWithPath: path))
         let playerController = AVPlayerViewController()
         playerController.player = player
         
         // Create time sychronized events
-        createSyncEvents()
+        createSyncEvents(player)
         
         self.presentViewController(playerController, animated: true) {
-            player.play()
+            self.player.play()
         }
     }
     
-    private func createSyncEvents() {
+    private func createSyncEvents(player: AVPlayer) {
         for time in syncArray {
             print ("time \(time)")
         }
