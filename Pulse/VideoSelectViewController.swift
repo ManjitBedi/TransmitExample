@@ -49,7 +49,7 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         do {
             let directoryUrls = try  fileManager.contentsOfDirectoryAtURL(docsURL, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
             
-            bundleURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "mov"  }
+            bundleURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "m4v"  }
             mediaInBundle = bundleURLs.map{ $0.lastPathComponent! }
         } catch {
             print(error)
@@ -60,7 +60,7 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         do {
             let directoryUrls = try  NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsUrl, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
             
-            documentURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "mov"  }
+            documentURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "m4v"  }
             mediaInDocumentsFolder = documentURLs.map{ $0.lastPathComponent! }
         } catch let error as NSError {
             print(error.localizedDescription)

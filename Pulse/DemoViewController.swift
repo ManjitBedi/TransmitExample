@@ -47,8 +47,14 @@ class DemoViewController: UIViewController {
     
     private func readInSyncData() {
         
-        let path : String = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
+        var path : String = ""
         
+        if (videoPath.rangeOfString(".mp4") != nil) {
+            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
+        } else if ( videoPath.rangeOfString(".m4v") != nil) {
+            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
+        }
+            
         //let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"txt")
         
         // read in the text file
@@ -70,6 +76,11 @@ class DemoViewController: UIViewController {
         }
         catch {
             print("could not open text file")
+            let alertController = UIAlertController(title: "Error", message:
+                "Could not open a text file for the video file.", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
     
