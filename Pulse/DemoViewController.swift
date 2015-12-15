@@ -15,7 +15,6 @@ class DemoViewController: UIViewController {
 
     weak var connectionManager: ConnectionManager?
     @IBOutlet weak var connectionsLabel: UILabel!
-    let defaultMovieName = "bb_minnie_the_moocher_512kb"
     var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
     var syncArray : [NSString] = []
@@ -35,7 +34,7 @@ class DemoViewController: UIViewController {
     }
     
     private func readInSyncData() {
-        let path = NSBundle.mainBundle().pathForResource(defaultMovieName, ofType:"txt")
+        let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"txt")
         
         // read in the text file
         do {
@@ -44,11 +43,9 @@ class DemoViewController: UIViewController {
             
             let tempArray = NSMutableArray()
             
-            // convert the strings to time and then encode the times as an NSValue to then add
-            // to an array of time values
+            // convert the strings to time and then encode the times as an NSValue to then add to an array of time values
             for timeString in syncArray {
-                let time = timeString.longLongValue
-                let cmTime  = CMTimeMake(time, 1)
+                let cmTime = CMTimeMake(timeString.longLongValue, 1000)
                 let cmValue = NSValue(CMTime: cmTime)
                 tempArray.addObject(cmValue)
             }
@@ -60,8 +57,8 @@ class DemoViewController: UIViewController {
     }
     
     private func playVideo() throws {
-        guard let path = NSBundle.mainBundle().pathForResource(defaultMovieName, ofType:"mp4") else {
-            throw AppError.InvalidResource(defaultMovieName, "mp4")
+        guard let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4") else {
+            throw AppError.InvalidResource(PulseConstants.Media.defaultVideoName, "mp4")
         }
         player = AVPlayer(URL: NSURL(fileURLWithPath: path))
         let playerController = AVPlayerViewController()
