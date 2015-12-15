@@ -145,6 +145,10 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="SSW-f2-HcW" id="K1S-j0-ZUc"/>
+                                    <outlet property="delegate" destination="SSW-f2-HcW" id="CWB-SR-rwU"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0j-pU-ox4">
                                 <rect key="frame" x="372" y="72" width="30" height="30"/>
@@ -170,6 +174,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Select Video" id="SvW-Ga-7DK"/>
+                    <connections>
+                        <outlet property="tableView" destination="Bqk-Ne-fCV" id="Uhl-pa-qro"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8jB-qi-IDJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
