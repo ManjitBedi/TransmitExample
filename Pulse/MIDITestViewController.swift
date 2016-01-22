@@ -14,11 +14,15 @@ import AudioToolbox
 class MIDITestViewController: UIViewController {
 
     var midiPlayer: AVMIDIPlayer!
+    var fileName: String!
     
     @IBOutlet weak var textView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fileName = "teddybear"
+        
         self.createAVMIDIPlayerFromMIDIFIleDLS()
     }
     
@@ -30,8 +34,8 @@ class MIDITestViewController: UIViewController {
 
     func createAVMIDIPlayerFromMIDIFIleDLS() {
         
-        guard let midiFileURL = NSBundle.mainBundle().URLForResource("teddybear", withExtension: "mid") else {
-            fatalError("\"teddybear\" file not found.")
+        guard let midiFileURL = NSBundle.mainBundle().URLForResource(fileName, withExtension: "mid") else {
+            fatalError("'\(fileName)' file not found.")
         }
         
         guard let bankURL = NSBundle.mainBundle().URLForResource("gs_instruments", withExtension: "dls") else {
@@ -52,6 +56,8 @@ class MIDITestViewController: UIViewController {
         self.LoadMusicSequence()
     }
     
+    
+    
     func LoadMusicSequence () {
         
         //let musicSequence:MusicSequence = MusicSequence()
@@ -62,7 +68,7 @@ class MIDITestViewController: UIViewController {
             print("\(__LINE__) bad status \(status) creating sequence")
         }
         
-        let midiFileURL = NSBundle.mainBundle().URLForResource("teddybear", withExtension: "mid")
+        let midiFileURL = NSBundle.mainBundle().URLForResource(fileName, withExtension: "mid")
 
         // Load a MIDI file
         MusicSequenceFileLoad(musicSequence, midiFileURL!, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
@@ -73,10 +79,22 @@ class MIDITestViewController: UIViewController {
         MusicSequenceGetTrackCount(musicSequence, iPointer)
         numberOfTracks = iPointer.memory
         iPointer.dealloc(1)
-        self.textView.text = "number of tracks " + String(numberOfTracks)
-
+        
+        // Get the details for the first track.
+        if numberOfTracks == 0 {
+            self.textView.text = "the MIDI file is shit"
+        } else {
+            let header = "number of tracks \(numberOfTracks)\n"
+            let trackInfo = self.getTrackInfo(musicSequence, trackNumber: 0)
+            self.textView.text = header + trackInfo
+        }
     }
     
+    
+    func getTrackInfo(musicSequeence:MusicSequence, trackNumber:UInt32) -> String {
+    
+        return "hello"
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
