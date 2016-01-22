@@ -8,10 +8,14 @@
 
 import UIKit
 import AVFoundation
+import CoreMIDI
+import AudioToolbox
 
 class MIDITestViewController: UIViewController {
 
     var midiPlayer: AVMIDIPlayer!
+    
+    @IBOutlet weak var textView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +45,38 @@ class MIDITestViewController: UIViewController {
             print("Error \(error.localizedDescription)")
         }
         
+        self.textView.text = self.midiPlayer.description
+        
         self.midiPlayer.prepareToPlay()
+        
+        self.LoadMusicSequence()
     }
+    
+    func LoadMusicSequence () {
+        
+        //let musicSequence:MusicSequence = MusicSequence()
+        
+        var musicSequence:MusicSequence = MusicSequence()
+        let status = NewMusicSequence(&musicSequence)
+        if status != OSStatus(noErr) {
+            print("\(__LINE__) bad status \(status) creating sequence")
+        }
+        
+        let midiFileURL = NSBundle.mainBundle().URLForResource("teddybear", withExtension: "mid")
+
+        // Load a MIDI file
+        MusicSequenceFileLoad(musicSequence, midiFileURL!, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
+        
+        var numberOfTracks: UInt32
+        let iPointer: UnsafeMutablePointer<UInt32> = UnsafeMutablePointer.alloc(1)
+
+        MusicSequenceGetTrackCount(musicSequence, iPointer)
+        numberOfTracks = iPointer.memory
+        iPointer.dealloc(1)
+        self.textView.text = "number of tracks " + String(numberOfTracks)
+
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
