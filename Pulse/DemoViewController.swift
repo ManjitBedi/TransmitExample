@@ -24,6 +24,7 @@ class DemoViewController: UIViewController {
     var times : [NSValue] = []
     var urlString : NSString = ""
     var videoPath : String = ""
+    var nf: NSNumberFormatter = NSNumberFormatter()
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -173,6 +174,7 @@ class DemoViewController: UIViewController {
         
         let tempArray = NSMutableArray()
 
+        // TODO: check the event type is a marker
         MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         while (hasNext) {
             MusicEventIteratorGetEventInfo(iterator,
@@ -193,7 +195,7 @@ class DemoViewController: UIViewController {
     }
 
     
-    // MARK
+    // MARK: -
     private func playVideo(path: String) {
         
         player = AVPlayer(URL: NSURL(fileURLWithPath: path))
@@ -211,9 +213,21 @@ class DemoViewController: UIViewController {
     }
     
     private func createSyncEvents(player: AVPlayer) {
-        player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: {
+        
+        nf = NSNumberFormatter()
+        nf.numberStyle = NSNumberFormatterStyle.DecimalStyle
+        nf.maximumFractionDigits = 2
+        nf.minimumFractionDigits = 2
+        
+        player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: { [weak nf] in
                 let timeInSeconds : Float64  =  CMTimeGetSeconds(player.currentTime())
-                print("sync event at time \(timeInSeconds)");
+            
+                // as the number formatter is an optional; need to wrap the code like this to avoid
+                // the debug saying "sync event at time Optional(7)" etc...
+                if let timeString = nf!.stringFromNumber(timeInSeconds) {
+                    print("sync event at time \(timeString)");
+                }
+            
                 self.connectionManager!.broadcastEvent()
             })
     }
