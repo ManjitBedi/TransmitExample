@@ -6,5 +6,6 @@ struct PulseConstants {
     struct Preferences {
         static let mediaKeyPref = "com.noorg.pulse.mediaPath"
         static let useDocumentsKeyPref = "com.noorg.pulse.useDocuments"
+        static let useMIDIKeyPref = "com.pulse.useMIDI"
     }
 }

@@ -18,12 +18,12 @@
 		781CB4641C1A32AC0010CC55 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781CB4631C1A32AC0010CC55 /* ModelManager.swift */; };
 		781CB4661C1A32C90010CC55 /* VideoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781CB4651C1A32C90010CC55 /* VideoDataModel.swift */; };
 		782C1BFF1C51BFBD00F60C38 /* MIDITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782C1BFE1C51BFBD00F60C38 /* MIDITestViewController.swift */; };
-		782C1C021C51C1F500F60C38 /* gs_instruments.dls in Resources */ = {isa = PBXBuildFile; fileRef = 782C1C001C51C1F500F60C38 /* gs_instruments.dls */; };
-		782C1C031C51C1F500F60C38 /* teddybear.mid in Resources */ = {isa = PBXBuildFile; fileRef = 782C1C011C51C1F500F60C38 /* teddybear.mid */; };
 		786BD3811C208A7900B889FB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786BD3801C208A7900B889FB /* Constants.swift */; };
 		786BD3831C20936500B889FB /* TimeCodeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786BD3821C20936500B889FB /* TimeCodeTableViewController.swift */; };
 		786BF92F1C1B65D900F4D2AE /* video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 786BF92E1C1B65D900F4D2AE /* video.mp4 */; };
 		78AA61CB1C1F500200895070 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA61CA1C1F500200895070 /* ConnectionManager.swift */; };
+		78D365C61C52E81B00575F7D /* video.mid in Resources */ = {isa = PBXBuildFile; fileRef = 78D365C51C52E81B00575F7D /* video.mid */; };
+		78D365C81C52FB2E00575F7D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78D365C71C52FB2E00575F7D /* Settings.bundle */; };
 		78EBD30E1C1F966E00DDDA16 /* video.txt in Resources */ = {isa = PBXBuildFile; fileRef = 78EBD30D1C1F966E00DDDA16 /* video.txt */; };
 /* End PBXBuildFile section */
 
@@ -41,12 +41,12 @@
 		781CB4631C1A32AC0010CC55 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 		781CB4651C1A32C90010CC55 /* VideoDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoDataModel.swift; sourceTree = "<group>"; };
 		782C1BFE1C51BFBD00F60C38 /* MIDITestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDITestViewController.swift; sourceTree = "<group>"; };
-		782C1C001C51C1F500F60C38 /* gs_instruments.dls */ = {isa = PBXFileReference; lastKnownFileType = file; name = gs_instruments.dls; path = Pulse/Media/gs_instruments.dls; sourceTree = "<group>"; };
-		782C1C011C51C1F500F60C38 /* teddybear.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; name = teddybear.mid; path = Pulse/Media/teddybear.mid; sourceTree = "<group>"; };
 		786BD3801C208A7900B889FB /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		786BD3821C20936500B889FB /* TimeCodeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCodeTableViewController.swift; sourceTree = "<group>"; };
 		786BF92E1C1B65D900F4D2AE /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = video.mp4; path = Pulse/Media/video.mp4; sourceTree = "<group>"; };
 		78AA61CA1C1F500200895070 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		78D365C51C52E81B00575F7D /* video.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; name = video.mid; path = Pulse/Media/video.mid; sourceTree = "<group>"; };
+		78D365C71C52FB2E00575F7D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		78EBD30D1C1F966E00DDDA16 /* video.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = video.txt; path = Pulse/Media/video.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +95,7 @@
 				781CB44F1C1A0FF00010CC55 /* Main.storyboard */,
 				781CB4521C1A0FF00010CC55 /* Assets.xcassets */,
 				781CB4541C1A0FF00010CC55 /* LaunchScreen.storyboard */,
+				78D365C71C52FB2E00575F7D /* Settings.bundle */,
 				781CB4571C1A0FF00010CC55 /* Info.plist */,
 			);
 			path = Pulse;
@@ -103,8 +104,7 @@
 		786BF92D1C1B65C800F4D2AE /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				782C1C001C51C1F500F60C38 /* gs_instruments.dls */,
-				782C1C011C51C1F500F60C38 /* teddybear.mid */,
+				78D365C51C52E81B00575F7D /* video.mid */,
 				786BF92E1C1B65D900F4D2AE /* video.mp4 */,
 				78EBD30D1C1F966E00DDDA16 /* video.txt */,
 			);
@@ -172,11 +172,11 @@
 			files = (
 				78EBD30E1C1F966E00DDDA16 /* video.txt in Resources */,
 				781CB4561C1A0FF00010CC55 /* LaunchScreen.storyboard in Resources */,
+				78D365C61C52E81B00575F7D /* video.mid in Resources */,
 				786BF92F1C1B65D900F4D2AE /* video.mp4 in Resources */,
 				781CB4531C1A0FF00010CC55 /* Assets.xcassets in Resources */,
-				782C1C031C51C1F500F60C38 /* teddybear.mid in Resources */,
-				782C1C021C51C1F500F60C38 /* gs_instruments.dls in Resources */,
 				781CB4511C1A0FF00010CC55 /* Main.storyboard in Resources */,
+				78D365C81C52FB2E00575F7D /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

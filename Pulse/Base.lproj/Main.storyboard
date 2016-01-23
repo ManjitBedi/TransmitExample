@@ -83,7 +83,7 @@
                                     <constraint firstAttribute="height" constant="128" id="Yfp-OO-YJM"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXD-Jw-NJ4">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXD-Jw-NJ4">
                                 <rect key="frame" x="411" y="129" width="32" height="30"/>
                                 <state key="normal" title="MIDI"/>
                                 <connections>
@@ -169,7 +169,7 @@
                                     <segue destination="yMY-F6-ZQx" kind="show" id="nEN-2j-Cjc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEF-no-ZPd">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEF-no-ZPd">
                                 <rect key="frame" x="376" y="76" width="22" height="22"/>
                                 <connections>
                                     <segue destination="yMY-F6-ZQx" kind="show" identifier="showTimes2" id="jUP-N4-19G"/>
