@@ -121,14 +121,18 @@ class DemoViewController: UIViewController {
         // Not sure about this, there seems to be at least 2 tracks.
         // The first track is just a MIDI header.
         if numberOfTracks == 0 {
-            print("the MIDI file is shit")
+            print("WTF, the MIDI file is shit; there aren't any tracks")
         } else {
             var trackLength:MusicTimeStamp = self.getTrackInfo(musicSequence, trackNumber: 0)
             
             // We only want there to be one track in the sequence!
-            if(trackLength == 0.0 && numberOfTracks > 1) {
+            if (trackLength == 0.0 && numberOfTracks > 1) {
                 for var i:UInt32 = 1; i < numberOfTracks; i++ {
                     trackLength = self.getTrackInfo(musicSequence, trackNumber: i)
+                    
+                    if(trackLength > 0.0) {
+                        break;
+                    }
                 }
             }
         }
@@ -154,7 +158,7 @@ class DemoViewController: UIViewController {
             return 0.0
         }
         
-        print("track length is \(trackLength)")
+        print("track length is \(trackLength) seconds for track \(trackNumber)")
         
         
         // Create an iterator that will loop through the events in the track

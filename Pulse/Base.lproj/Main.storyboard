@@ -360,25 +360,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZB-lv-Pdv">
-                                <rect key="frame" x="283" y="84" width="34" height="30"/>
-                                <state key="normal" title="Start"/>
-                                <connections>
-                                    <action selector="showBrowser:" destination="to9-e3-eiy" eventType="touchUpInside" id="K7T-Cg-Xd7"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="connections 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5t-6e-hXN">
                                 <rect key="frame" x="246" y="559" width="109" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZB-lv-Pdv">
+                                <rect key="frame" x="220" y="83" width="160" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Start the Video"/>
+                                <connections>
+                                    <action selector="showBrowser:" destination="to9-e3-eiy" eventType="touchUpInside" id="K7T-Cg-Xd7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EZN-l8-nqj" firstAttribute="top" secondItem="a5t-6e-hXN" secondAttribute="bottom" constant="20" id="0TX-AF-Z18"/>
                             <constraint firstItem="a5t-6e-hXN" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="9iH-Bx-qf9"/>
-                            <constraint firstItem="ZZB-lv-Pdv" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="20" id="Pwk-cH-4B1"/>
+                            <constraint firstItem="ZZB-lv-Pdv" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="19" id="Pwk-cH-4B1"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="kTx-wI-3on"/>
                         </constraints>
                     </view>
