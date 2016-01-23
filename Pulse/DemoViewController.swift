@@ -10,6 +10,9 @@ import UIKit
 import AVKit
 import AVFoundation
 import CoreMedia
+import CoreMIDI
+import AudioToolbox
+
 
 class DemoViewController: UIViewController {
 
@@ -21,11 +24,13 @@ class DemoViewController: UIViewController {
     var times : [NSValue] = []
     var urlString : NSString = ""
     var videoPath : String = ""
+    var nf: NSNumberFormatter = NSNumberFormatter()
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         let defaults = NSUserDefaults.standardUserDefaults()
+        
         if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
             urlString = temp
             videoPath = urlString as String
@@ -35,8 +40,13 @@ class DemoViewController: UIViewController {
             videoPath = path! as String
         }
         
-        readInSyncData()
-        
+        let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
+        if(useMIDI) {
+            readInSyncDataMIDI()
+        } else {
+            readInSyncDataText()
+        }
+            
         connectionManager = ConnectionManager.sharedManager
         if let peers = connectionManager?.session.connectedPeers {
             connectionsLabel.text = "connections \(peers.count)"
@@ -45,12 +55,16 @@ class DemoViewController: UIViewController {
         }
     }
     
-    private func readInSyncData() {
+    private func readInSyncDataText() {
         
-        let path : String = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
+        var path : String = ""
         
-        //let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"txt")
-        
+        if (videoPath.rangeOfString(".mp4") != nil) {
+            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
+        } else if ( videoPath.rangeOfString(".m4v") != nil) {
+            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
+        }
+            
         // read in the text file
         do {
             syncData = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
@@ -70,9 +84,118 @@ class DemoViewController: UIViewController {
         }
         catch {
             print("could not open text file")
+            let alertController = UIAlertController(title: "Error", message:
+                "Could not open a text file for the video file.", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
     
+    private func readInSyncDataMIDI() {
+        var musicSequence:MusicSequence = MusicSequence()
+        let status = NewMusicSequence(&musicSequence)
+        if status != OSStatus(noErr) {
+            print("\(__LINE__) bad status \(status) creating sequence")
+        }
+        
+        var path : String = ""
+        
+        if (videoPath.rangeOfString(".mp4") != nil) {
+            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".mid")
+        } else if ( videoPath.rangeOfString(".m4v") != nil) {
+            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".mid")
+        }
+        
+        let midiFileURL = NSURL(fileURLWithPath: path)
+        
+        // Load a MIDI file
+        MusicSequenceFileLoad(musicSequence, midiFileURL, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
+        
+        var numberOfTracks: UInt32
+        let iPointer: UnsafeMutablePointer<UInt32> = UnsafeMutablePointer.alloc(1)
+        
+        MusicSequenceGetTrackCount(musicSequence, iPointer)
+        numberOfTracks = iPointer.memory
+        iPointer.dealloc(1)
+        
+        // Not sure about this, there seems to be at least 2 tracks.
+        // The first track is just a MIDI header.
+        if numberOfTracks == 0 {
+            print("WTF, the MIDI file is shit; there aren't any tracks")
+        } else {
+            var trackLength:MusicTimeStamp = self.getTrackInfo(musicSequence, trackNumber: 0)
+            
+            // We only want there to be one track in the sequence!
+            if (trackLength == 0.0 && numberOfTracks > 1) {
+                for var i:UInt32 = 1; i < numberOfTracks; i++ {
+                    trackLength = self.getTrackInfo(musicSequence, trackNumber: i)
+                    
+                    if(trackLength > 0.0) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    // TODO refactor
+    func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> MusicTimeStamp {
+        var track : MusicTrack = MusicTrack()
+        let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.alloc(1)
+        MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
+        track = trackPointer.memory
+        trackPointer.dealloc(1)
+        
+        var trackLength = MusicTimeStamp(0)
+        var tracklengthSize = UInt32(0)
+        let status = MusicTrackGetProperty(track,
+            UInt32(kSequenceTrackProperty_TrackLength),
+            &trackLength,
+            &tracklengthSize)
+        if status != OSStatus(noErr) {
+            print("Error getting track length \(status)")
+            return 0.0
+        }
+        
+        print("track length is \(trackLength) seconds for track \(trackNumber)")
+        
+        
+        // Create an iterator that will loop through the events in the track
+        var iterator : MusicEventIterator = MusicEventIterator()
+        NewMusicEventIterator(track, &iterator);
+        
+        var hasNext: DarwinBoolean = true
+        var timestamp : MusicTimeStamp = 0
+        var eventType : MusicEventType = 0
+        var eventDataSize: UInt32 = 0
+        let eventData: UnsafeMutablePointer<UnsafePointer<Void>> = UnsafeMutablePointer.alloc(1)
+        
+        let tempArray = NSMutableArray()
+
+        // TODO: check the event type is a marker
+        MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
+        while (hasNext) {
+            MusicEventIteratorGetEventInfo(iterator,
+                &timestamp,
+                &eventType,
+                eventData,
+                &eventDataSize);
+            
+            let cmTime = CMTimeMakeWithSeconds( Float64(timestamp), 10)
+            let cmValue = NSValue(CMTime: cmTime)
+            tempArray.addObject(cmValue)
+            MusicEventIteratorNextEvent(iterator);
+            MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
+        }
+        self.times = tempArray as NSArray as! [NSValue]
+        
+        return trackLength
+    }
+
+    
+    // MARK: -
     private func playVideo(path: String) {
         
         player = AVPlayer(URL: NSURL(fileURLWithPath: path))
@@ -90,8 +213,21 @@ class DemoViewController: UIViewController {
     }
     
     private func createSyncEvents(player: AVPlayer) {
-        player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: {
-                print("sync event");
+        
+        nf = NSNumberFormatter()
+        nf.numberStyle = NSNumberFormatterStyle.DecimalStyle
+        nf.maximumFractionDigits = 2
+        nf.minimumFractionDigits = 2
+        
+        player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: { [weak nf] in
+                let timeInSeconds : Float64  =  CMTimeGetSeconds(player.currentTime())
+            
+                // as the number formatter is an optional; need to wrap the code like this to avoid
+                // the debug saying "sync event at time Optional(7)" etc...
+                if let timeString = nf!.stringFromNumber(timeInSeconds) {
+                    print("sync event at time \(timeString)");
+                }
+            
                 self.connectionManager!.broadcastEvent()
             })
     }
