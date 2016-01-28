@@ -41,7 +41,7 @@ class DemoViewController: UIViewController {
         }
         
         let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
-        if(useMIDI) {
+        if (useMIDI) {
             readInSyncDataMIDI()
         } else {
             readInSyncDataText()
@@ -131,7 +131,7 @@ class DemoViewController: UIViewController {
                 for i:UInt32 in 1 ..< numberOfTracks {
                     trackLength = self.getTrackInfo(musicSequence, trackNumber: i)
                     
-                    if(trackLength > 0.0) {
+                    if (trackLength > 0.0) {
                         break;
                     }
                 }

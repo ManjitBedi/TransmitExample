@@ -44,7 +44,7 @@ class MIDITestViewController: UIViewController {
         }
     }
 
-    // To play a MIDI file we need to have loaded an sound font
+    // To play a MIDI file, we need to have loaded a sound font
     func createAVMIDIPlayerFromMIDIFIleDLS() {
         guard let midiFileURL = NSBundle.mainBundle().URLForResource(fileName, withExtension: "mid") else {
             fatalError("'\(fileName)' file not found.")
@@ -80,7 +80,7 @@ class MIDITestViewController: UIViewController {
         status = MusicSequenceFileLoad(musicSequence, midiFileURL!, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
         
         if status != OSStatus(noErr) {
-            print("Error with opening the MIDI sequence \(status)")
+            print("\(__LINE__) Error with opening the MIDI sequence \(status)")
             return
         }
         
@@ -89,7 +89,7 @@ class MIDITestViewController: UIViewController {
 
         status = MusicSequenceGetTrackCount(musicSequence, iPointer)
         if status != OSStatus(noErr) {
-            print("Error getting number of tracks \(status)")
+            print("\(__LINE__) Error getting number of tracks \(status)")
             return
         }
         
@@ -104,7 +104,7 @@ class MIDITestViewController: UIViewController {
             let trackInfo = self.getTrackInfo(musicSequence, trackNumber: 0)
             
             // We only want there to be one track in the sequence!
-            if(numberOfTracks > 1) {
+            if (numberOfTracks > 1) {
                 for i:UInt32 in 1 ..< numberOfTracks {
                     self.getTrackInfo(musicSequence, trackNumber: i)
                 }
@@ -131,7 +131,7 @@ class MIDITestViewController: UIViewController {
             &trackLength,
             &tracklengthSize)
         if status != OSStatus(noErr) {
-            print("Error getting track length \(status)")
+            print("\(__LINE__) Error getting track length \(status)")
             return ""
         }
         
@@ -143,27 +143,30 @@ class MIDITestViewController: UIViewController {
         status = NewMusicEventIterator(track, &iterator);
         
         if status != OSStatus(noErr) {
-            print("Error creating iterator \(status)")
+            print("\(__LINE__) Error creating iterator \(status)")
             return ""
         }
         
         var hasNext: DarwinBoolean = true
-        var timestamp : MusicTimeStamp = 0
-        var eventType : MusicEventType = 0
+        var timestamp : MusicTimeStamp = MusicTimeStamp(0)
+        var eventType : MusicEventType = MusicEventType(0)
         var eventDataSize: UInt32 = 0
         let eventData: UnsafeMutablePointer<UnsafePointer<Void>> = nil
         
         // Iterate through the events in the MIDI track
         MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         while (hasNext) {
-            MusicEventIteratorGetEventInfo(iterator,
+            status = MusicEventIteratorGetEventInfo(iterator,
                 &timestamp,
                 &eventType,
                 eventData,
                 &eventDataSize);
             
-            // Process each event here...
-            print("Event found! type: \(eventType) at time \(timestamp)\n");
+            if status != OSStatus(noErr) {
+                print("\(__LINE__) Error getting event from track \(status)")
+            } else {
+                print("Event found! type: \(eventType) at time \(timestamp)\n");
+            }
             MusicEventIteratorNextEvent(iterator);
             MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         }
