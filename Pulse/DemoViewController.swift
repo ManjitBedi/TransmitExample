@@ -41,7 +41,7 @@ class DemoViewController: UIViewController {
         }
         
         let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
-        if(useMIDI) {
+        if (useMIDI) {
             readInSyncDataMIDI()
         } else {
             readInSyncDataText()
@@ -93,7 +93,7 @@ class DemoViewController: UIViewController {
     }
     
     private func readInSyncDataMIDI() {
-        var musicSequence:MusicSequence = MusicSequence()
+        var musicSequence:MusicSequence = nil
         let status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
             print("\(__LINE__) bad status \(status) creating sequence")
@@ -128,10 +128,10 @@ class DemoViewController: UIViewController {
             
             // We only want there to be one track in the sequence!
             if (trackLength == 0.0 && numberOfTracks > 1) {
-                for var i:UInt32 = 1; i < numberOfTracks; i++ {
+                for i:UInt32 in 1 ..< numberOfTracks {
                     trackLength = self.getTrackInfo(musicSequence, trackNumber: i)
                     
-                    if(trackLength > 0.0) {
+                    if (trackLength > 0.0) {
                         break;
                     }
                 }
@@ -142,15 +142,21 @@ class DemoViewController: UIViewController {
     
     // TODO refactor
     func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> MusicTimeStamp {
-        var track : MusicTrack = MusicTrack()
+        var track : MusicTrack = nil
         let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.alloc(1)
-        MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
+        var status = MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
+        
+        if status != OSStatus(noErr) {
+            print("Error with opening the MIDI sequence \(status)")
+            return 0.0
+        }
+        
         track = trackPointer.memory
         trackPointer.dealloc(1)
         
         var trackLength = MusicTimeStamp(0)
         var tracklengthSize = UInt32(0)
-        let status = MusicTrackGetProperty(track,
+        status = MusicTrackGetProperty(track,
             UInt32(kSequenceTrackProperty_TrackLength),
             &trackLength,
             &tracklengthSize)
@@ -163,7 +169,7 @@ class DemoViewController: UIViewController {
         
         
         // Create an iterator that will loop through the events in the track
-        var iterator : MusicEventIterator = MusicEventIterator()
+        var iterator : MusicEventIterator = nil
         NewMusicEventIterator(track, &iterator);
         
         var hasNext: DarwinBoolean = true
@@ -175,7 +181,14 @@ class DemoViewController: UIViewController {
         let tempArray = NSMutableArray()
 
         // TODO: check the event type is a marker
-        MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
+        status = MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
+        
+        if status != OSStatus(noErr) {
+            print("Error creating track iterator \(status)")
+            return 0.0
+        }
+
+        
         while (hasNext) {
             MusicEventIteratorGetEventInfo(iterator,
                 &timestamp,
