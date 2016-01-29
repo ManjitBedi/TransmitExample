@@ -22,23 +22,21 @@ class DemoViewController: UIViewController {
     var syncData : NSString = ""
     var syncArray : [NSString] = []
     var times : [NSValue] = []
-    var urlString : NSString = ""
-    var videoPath : String = ""
+    var videoPath : String?
     var nf: NSNumberFormatter = NSNumberFormatter()
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        
         if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
-            urlString = temp
-            videoPath = urlString as String
-            print(urlString)
+            videoPath = temp
         } else {
             let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4")
             videoPath = path! as String
         }
+        
+        print("Load video with name \"\(videoPath)\"")
         
         let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
         if (useMIDI) {
@@ -59,10 +57,10 @@ class DemoViewController: UIViewController {
         
         var path : String = ""
         
-        if (videoPath.rangeOfString(".mp4") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
-        } else if ( videoPath.rangeOfString(".m4v") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
+        if (videoPath!.rangeOfString(".mp4") != nil) {
+            path = videoPath!.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
+        } else if ( videoPath!.rangeOfString(".m4v") != nil) {
+            path = videoPath!.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
         }
             
         // read in the text file
@@ -83,9 +81,9 @@ class DemoViewController: UIViewController {
             
         }
         catch {
-            print("could not open text file")
+            print("could not open data file")
             let alertController = UIAlertController(title: "Error", message:
-                "Could not open a text file for the video file.", preferredStyle: UIAlertControllerStyle.Alert)
+                "Could not open the data \"()\".", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
             
             self.presentViewController(alertController, animated: true, completion: nil)
@@ -101,10 +99,10 @@ class DemoViewController: UIViewController {
         
         var path : String = ""
         
-        if (videoPath.rangeOfString(".mp4") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".mid")
-        } else if ( videoPath.rangeOfString(".m4v") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".mid")
+        if (videoPath!.rangeOfString(".mp4") != nil) {
+            path = videoPath!.stringByReplacingOccurrencesOfString(".mp4", withString:".mid")
+        } else if ( videoPath!.rangeOfString(".m4v") != nil) {
+            path = videoPath!.stringByReplacingOccurrencesOfString(".m4v", withString:".mid")
         }
         
         let midiFileURL = NSURL(fileURLWithPath: path)
@@ -247,10 +245,9 @@ class DemoViewController: UIViewController {
     
     
     @IBAction func showBrowser(sender: UIButton)  {
-        playVideo(videoPath)
+        playVideo(videoPath!)
     }
 }
-
 
 
 enum AppError : ErrorType {
