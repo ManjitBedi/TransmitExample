@@ -18,6 +18,9 @@ class DemoViewController: UIViewController {
 
     weak var connectionManager: ConnectionManager?
     @IBOutlet weak var connectionsLabel: UILabel!
+    @IBOutlet weak var videoFileNameLabel: UILabel!
+    @IBOutlet weak var usingDataLabel: UILabel!
+    
     var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
     var syncArray : [NSString] = []
@@ -37,11 +40,15 @@ class DemoViewController: UIViewController {
         }
         
         print("Load video with name \"\(videoPath)\"")
+        let url = NSURL(fileURLWithPath: videoPath!)
+        videoFileNameLabel.text = url.lastPathComponent
         
         let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
         if (useMIDI) {
+            usingDataLabel.text = "Using MIDI data"
             readInSyncDataMIDI()
         } else {
+            usingDataLabel.text = "Using txt data"
             readInSyncDataText()
         }
             
@@ -53,16 +60,35 @@ class DemoViewController: UIViewController {
         }
     }
     
+    private func nameForDataFile(videoFileName:String, fileExtension:String) -> String {
+        var path : String = ""
+        let url = NSURL(fileURLWithPath: videoFileName)
+
+        let ext = url.pathExtension
+        
+        if ((ext) != nil) {
+            var components = url.pathComponents
+            let position = (components?.count)! - 1
+            let temp = components![position]
+            var fileNameSplit = temp.characters.split{$0 == "."}.map(String.init)
+            fileNameSplit[1] = fileExtension
+            
+            components![position] = fileNameSplit[0]+fileNameSplit[1]
+            // now join the string back together
+            let joinedString = components!.joinWithSeparator("/")
+            // Ok but we need to trim the extra /
+            path = String(joinedString.characters.dropFirst())
+            
+        } else {
+            path = videoFileName + fileExtension
+        }
+        
+        return path
+    }
+    
     private func readInSyncDataText() {
         
-        var path : String = ""
-        
-        if (videoPath!.rangeOfString(".mp4") != nil) {
-            path = videoPath!.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
-        } else if ( videoPath!.rangeOfString(".m4v") != nil) {
-            path = videoPath!.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
-        }
-            
+        let path = self.nameForDataFile(videoPath!, fileExtension: ".txt")
         // read in the text file
         do {
             syncData = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
@@ -97,14 +123,7 @@ class DemoViewController: UIViewController {
             print("\(__LINE__) bad status \(status) creating sequence")
         }
         
-        var path : String = ""
-        
-        if (videoPath!.rangeOfString(".mp4") != nil) {
-            path = videoPath!.stringByReplacingOccurrencesOfString(".mp4", withString:".mid")
-        } else if ( videoPath!.rangeOfString(".m4v") != nil) {
-            path = videoPath!.stringByReplacingOccurrencesOfString(".m4v", withString:".mid")
-        }
-        
+        let path = self.nameForDataFile(videoPath!, fileExtension: ".mid")
         let midiFileURL = NSURL(fileURLWithPath: path)
         
         // Load a MIDI file
