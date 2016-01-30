@@ -281,7 +281,7 @@ class DemoViewController: UIViewController {
     }
     
     
-    @IBAction func showBrowser(sender: UIButton)  {
+    @IBAction func playTheVideo(sender: UIButton)  {
         playVideo(videoPath!)
     }
 }

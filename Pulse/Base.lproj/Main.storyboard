@@ -371,7 +371,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Start the Video"/>
                                 <connections>
-                                    <action selector="showBrowser:" destination="to9-e3-eiy" eventType="touchUpInside" id="K7T-Cg-Xd7"/>
+                                    <action selector="playTheVideo:" destination="to9-e3-eiy" eventType="touchUpInside" id="oQ2-DP-uK7"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="file name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsz-E2-tok">
