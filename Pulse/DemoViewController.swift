@@ -66,17 +66,26 @@ class DemoViewController: UIViewController {
 
         let ext = url.pathExtension
         
+        // It is entirely possible the video file does not have an extension.
+        
         if ((ext) != nil) {
+            // split the path into components to get at the file name
             var components = url.pathComponents
+            
+            // the file name is the last time in array
             let position = (components?.count)! - 1
             let temp = components![position]
+            
+            // split the file name at the period character
             var fileNameSplit = temp.characters.split{$0 == "."}.map(String.init)
             fileNameSplit[1] = fileExtension
             
+            // create a new file name
             components![position] = fileNameSplit[0]+fileNameSplit[1]
-            // now join the string back together
+
+            // joins the path components back together
             let joinedString = components!.joinWithSeparator("/")
-            // Ok but we need to trim the extra /
+            // Ok but we need to trim the extra forward slash
             path = String(joinedString.characters.dropFirst())
             
         } else {
@@ -104,7 +113,6 @@ class DemoViewController: UIViewController {
             }
             
             self.times = tempArray as NSArray as! [NSValue]
-            
         }
         catch {
             print("could not open data file")
@@ -228,7 +236,17 @@ class DemoViewController: UIViewController {
     // MARK: -
     private func playVideo(path: String) {
         
-        player = AVPlayer(URL: NSURL(fileURLWithPath: path))
+        guard let player:AVPlayer = AVPlayer(URL: NSURL(fileURLWithPath: path)) else  {
+            let filePath:NSString = path as NSString
+            let alertController = UIAlertController(title: "Error", message:
+                "Could not open the video \"\(filePath.lastPathComponent)\".", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        
         let playerController = AVPlayerViewController()
         playerController.player = player
         
