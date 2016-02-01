@@ -149,31 +149,34 @@ class DemoViewController: UIViewController {
         if numberOfTracks == 0 {
             print("WTF, the MIDI file is shit; there aren't any tracks")
         } else {
-            var trackLength:MusicTimeStamp = self.getTrackInfo(musicSequence, trackNumber: 0)
+            let (trackLength, events) = self.getTrackInfo(musicSequence, trackNumber: 0)
             
             // We only want there to be one track in the sequence!
             if (trackLength == 0.0 && numberOfTracks > 1) {
                 for i:UInt32 in 1 ..< numberOfTracks {
-                    trackLength = self.getTrackInfo(musicSequence, trackNumber: i)
+                    let (trackLength, events) = self.getTrackInfo(musicSequence, trackNumber: i)
                     
                     if (trackLength > 0.0) {
+                        self.times = events
                         break;
                     }
                 }
+            } else {
+                self.times = events
             }
         }
     }
     
     
-    // TODO refactor
-    func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> MusicTimeStamp {
-        var track : MusicTrack = nil
+    func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> (length: MusicTimeStamp, events:[NSValue]) {
+        var track: MusicTrack = nil
         let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.alloc(1)
         var status = MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
+        var times:[NSValue] = []
         
         if status != OSStatus(noErr) {
             print("Error with opening the MIDI sequence \(status)")
-            return 0.0
+            return (0.0, times)
         }
         
         track = trackPointer.memory
@@ -187,15 +190,26 @@ class DemoViewController: UIViewController {
             &tracklengthSize)
         if status != OSStatus(noErr) {
             print("Error getting track length \(status)")
-            return 0.0
+            return (0.0, times)
+        }
+        
+        
+        // No point in processing events if the track length is 0
+        if (trackLength == 0) {
+            return (0.0, times)
         }
         
         print("track length is \(trackLength) seconds for track \(trackNumber)")
         
-        
         // Create an iterator that will loop through the events in the track
         var iterator : MusicEventIterator = nil
         NewMusicEventIterator(track, &iterator);
+        
+        if status != OSStatus(noErr) {
+            print("Error creating track iterator \(status)")
+            return (0.0, times)
+        }
+
         
         var hasNext: DarwinBoolean = true
         var timestamp : MusicTimeStamp = 0
@@ -203,17 +217,15 @@ class DemoViewController: UIViewController {
         var eventDataSize: UInt32 = 0
         let eventData: UnsafeMutablePointer<UnsafePointer<Void>> = UnsafeMutablePointer.alloc(1)
         
-        let tempArray = NSMutableArray()
-
-        // TODO: check the event type is a marker
         status = MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         
+        // This would be strange if it happened.
+        // It would mean the track has a duration but nothng in it...
         if status != OSStatus(noErr) {
-            print("Error creating track iterator \(status)")
-            return 0.0
+            print("Error no event in the MIDI track\(status)")
+            return (trackLength, times)
         }
 
-        
         while (hasNext) {
             MusicEventIteratorGetEventInfo(iterator,
                 &timestamp,
@@ -221,15 +233,16 @@ class DemoViewController: UIViewController {
                 eventData,
                 &eventDataSize);
             
+            // TODO: check the event type is a marker
             let cmTime = CMTimeMakeWithSeconds( Float64(timestamp), 10)
             let cmValue = NSValue(CMTime: cmTime)
-            tempArray.addObject(cmValue)
+            times.append(cmValue)
+            
             MusicEventIteratorNextEvent(iterator);
             MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         }
-        self.times = tempArray as NSArray as! [NSValue]
         
-        return trackLength
+        return (trackLength, times)
     }
 
     
