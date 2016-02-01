@@ -117,9 +117,8 @@ class DemoViewController: UIViewController {
         catch {
             print("could not open data file")
             let alertController = UIAlertController(title: "Error", message:
-                "Could not open the data \"()\".", preferredStyle: UIAlertControllerStyle.Alert)
+                "Could not open the data file.", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            
             self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
@@ -161,8 +160,15 @@ class DemoViewController: UIViewController {
                         break;
                     }
                 }
-            } else {
+            } else if trackLength != 0.0 {
                 self.times = events
+            }
+            
+            if self.times.count == 0 {
+                let alertController = UIAlertController(title: "Error", message:
+                    "There are no timing events.", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
