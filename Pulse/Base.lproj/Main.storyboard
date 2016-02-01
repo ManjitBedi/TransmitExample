@@ -371,21 +371,43 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Start the Video"/>
                                 <connections>
-                                    <action selector="showBrowser:" destination="to9-e3-eiy" eventType="touchUpInside" id="K7T-Cg-Xd7"/>
+                                    <action selector="playTheVideo:" destination="to9-e3-eiy" eventType="touchUpInside" id="oQ2-DP-uK7"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="file name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsz-E2-tok">
+                                <rect key="frame" x="200" y="505" width="200" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use MIDI data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5BV-CL-E8o">
+                                <rect key="frame" x="200" y="534" width="200" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="FOa-nh-9Ol"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EZN-l8-nqj" firstAttribute="top" secondItem="a5t-6e-hXN" secondAttribute="bottom" constant="20" id="0TX-AF-Z18"/>
+                            <constraint firstItem="5BV-CL-E8o" firstAttribute="top" secondItem="fsz-E2-tok" secondAttribute="bottom" constant="8" id="3B6-cj-anB"/>
                             <constraint firstItem="a5t-6e-hXN" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="9iH-Bx-qf9"/>
+                            <constraint firstItem="a5t-6e-hXN" firstAttribute="top" secondItem="5BV-CL-E8o" secondAttribute="bottom" constant="4" id="JZb-yA-lMK"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="19" id="Pwk-cH-4B1"/>
+                            <constraint firstItem="5BV-CL-E8o" firstAttribute="centerX" secondItem="a5t-6e-hXN" secondAttribute="centerX" id="fHj-ck-CgD"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="kTx-wI-3on"/>
+                            <constraint firstItem="5BV-CL-E8o" firstAttribute="leading" secondItem="fsz-E2-tok" secondAttribute="leading" id="skf-Fb-df1"/>
+                            <constraint firstItem="5BV-CL-E8o" firstAttribute="trailing" secondItem="fsz-E2-tok" secondAttribute="trailing" id="smC-14-VCN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Demo" id="Gez-dv-MgZ"/>
                     <connections>
                         <outlet property="connectionsLabel" destination="a5t-6e-hXN" id="kCi-Nm-gXQ"/>
+                        <outlet property="usingDataLabel" destination="5BV-CL-E8o" id="kVJ-Xm-uzl"/>
+                        <outlet property="videoFileNameLabel" destination="fsz-E2-tok" id="nzK-nj-rrr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wpt-Kn-Jwx" userLabel="First Responder" sceneMemberID="firstResponder"/>

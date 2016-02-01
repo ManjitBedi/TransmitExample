@@ -33,7 +33,12 @@ class MIDITestViewController: UIViewController {
         // There is a video file and correpsonding MIDI file in the app bundle
         fileName = "video"
         
-        self.LoadMusicSequence()
+        let status = self.LoadMusicSequence()
+        if (!status) {
+            let alert = UIAlertController(title: "Alert", message: "There was a problem with MIDI file.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func playSomeMIDI(sender: AnyObject) {
@@ -67,7 +72,7 @@ class MIDITestViewController: UIViewController {
     
     // Load a MIDI sequence and get the lengths of the tracks
     // This requires calling C methods and using bridging
-    func LoadMusicSequence () {
+    func LoadMusicSequence () -> Bool {
         var musicSequence:MusicSequence = nil
         var status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
@@ -81,7 +86,7 @@ class MIDITestViewController: UIViewController {
         
         if status != OSStatus(noErr) {
             print("\(__LINE__) Error with opening the MIDI sequence \(status)")
-            return
+            return false
         }
         
         var numberOfTracks: UInt32
@@ -90,7 +95,7 @@ class MIDITestViewController: UIViewController {
         status = MusicSequenceGetTrackCount(musicSequence, iPointer)
         if status != OSStatus(noErr) {
             print("\(__LINE__) Error getting number of tracks \(status)")
-            return
+            return false
         }
         
         numberOfTracks = iPointer.memory
@@ -112,6 +117,8 @@ class MIDITestViewController: UIViewController {
                 
             self.textView.text = header + trackInfo
         }
+        
+        return true
     }
     
     

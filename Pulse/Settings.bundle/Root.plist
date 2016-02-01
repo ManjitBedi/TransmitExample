@@ -18,7 +18,7 @@
 			<key>Title</key>
 			<string>Use MIDI</string>
 			<key>Key</key>
-			<string>com.pulse.useMIDI</string>
+			<string>com.noorg.pulse.useMIDI</string>
 			<key>DefaultValue</key>
 			<true/>
 		</dict>

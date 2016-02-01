@@ -18,32 +18,37 @@ class DemoViewController: UIViewController {
 
     weak var connectionManager: ConnectionManager?
     @IBOutlet weak var connectionsLabel: UILabel!
+    @IBOutlet weak var videoFileNameLabel: UILabel!
+    @IBOutlet weak var usingDataLabel: UILabel!
+    
     var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
     var syncArray : [NSString] = []
     var times : [NSValue] = []
-    var urlString : NSString = ""
-    var videoPath : String = ""
+    var videoPath : String?
     var nf: NSNumberFormatter = NSNumberFormatter()
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        
         if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
-            urlString = temp
-            videoPath = urlString as String
-            print(urlString)
+            videoPath = temp
         } else {
             let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4")
             videoPath = path! as String
         }
         
+        print("Load video with name \"\(videoPath)\"")
+        let url = NSURL(fileURLWithPath: videoPath!)
+        videoFileNameLabel.text = url.lastPathComponent
+        
         let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
         if (useMIDI) {
+            usingDataLabel.text = "Using MIDI data"
             readInSyncDataMIDI()
         } else {
+            usingDataLabel.text = "Using txt data"
             readInSyncDataText()
         }
             
@@ -55,16 +60,44 @@ class DemoViewController: UIViewController {
         }
     }
     
+    private func nameForDataFile(videoFileName:String, fileExtension:String) -> String {
+        var path : String = ""
+        let url = NSURL(fileURLWithPath: videoFileName)
+
+        let ext = url.pathExtension
+        
+        // It is entirely possible the video file does not have an extension.
+        
+        if ((ext) != nil) {
+            // split the path into components to get at the file name
+            var components = url.pathComponents
+            
+            // the file name is the last time in array
+            let position = (components?.count)! - 1
+            let temp = components![position]
+            
+            // split the file name at the period character
+            var fileNameSplit = temp.characters.split{$0 == "."}.map(String.init)
+            fileNameSplit[1] = fileExtension
+            
+            // create a new file name
+            components![position] = fileNameSplit[0]+fileNameSplit[1]
+
+            // joins the path components back together
+            let joinedString = components!.joinWithSeparator("/")
+            // Ok but we need to trim the extra forward slash
+            path = String(joinedString.characters.dropFirst())
+            
+        } else {
+            path = videoFileName + fileExtension
+        }
+        
+        return path
+    }
+    
     private func readInSyncDataText() {
         
-        var path : String = ""
-        
-        if (videoPath.rangeOfString(".mp4") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
-        } else if ( videoPath.rangeOfString(".m4v") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
-        }
-            
+        let path = self.nameForDataFile(videoPath!, fileExtension: ".txt")
         // read in the text file
         do {
             syncData = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
@@ -80,14 +113,12 @@ class DemoViewController: UIViewController {
             }
             
             self.times = tempArray as NSArray as! [NSValue]
-            
         }
         catch {
-            print("could not open text file")
+            print("could not open data file")
             let alertController = UIAlertController(title: "Error", message:
-                "Could not open a text file for the video file.", preferredStyle: UIAlertControllerStyle.Alert)
+                "Could not open the data file.", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            
             self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
@@ -99,14 +130,7 @@ class DemoViewController: UIViewController {
             print("\(__LINE__) bad status \(status) creating sequence")
         }
         
-        var path : String = ""
-        
-        if (videoPath.rangeOfString(".mp4") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".mid")
-        } else if ( videoPath.rangeOfString(".m4v") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".mid")
-        }
-        
+        let path = self.nameForDataFile(videoPath!, fileExtension: ".mid")
         let midiFileURL = NSURL(fileURLWithPath: path)
         
         // Load a MIDI file
@@ -124,31 +148,41 @@ class DemoViewController: UIViewController {
         if numberOfTracks == 0 {
             print("WTF, the MIDI file is shit; there aren't any tracks")
         } else {
-            var trackLength:MusicTimeStamp = self.getTrackInfo(musicSequence, trackNumber: 0)
+            let (trackLength, events) = self.getTrackInfo(musicSequence, trackNumber: 0)
             
             // We only want there to be one track in the sequence!
             if (trackLength == 0.0 && numberOfTracks > 1) {
                 for i:UInt32 in 1 ..< numberOfTracks {
-                    trackLength = self.getTrackInfo(musicSequence, trackNumber: i)
+                    let (trackLength, events) = self.getTrackInfo(musicSequence, trackNumber: i)
                     
                     if (trackLength > 0.0) {
+                        self.times = events
                         break;
                     }
                 }
+            } else if trackLength != 0.0 {
+                self.times = events
+            }
+            
+            if self.times.count == 0 {
+                let alertController = UIAlertController(title: "Error", message:
+                    "There are no timing events.", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
     
     
-    // TODO refactor
-    func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> MusicTimeStamp {
-        var track : MusicTrack = nil
+    func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> (length: MusicTimeStamp, events:[NSValue]) {
+        var track: MusicTrack = nil
         let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.alloc(1)
         var status = MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
+        var times:[NSValue] = []
         
         if status != OSStatus(noErr) {
             print("Error with opening the MIDI sequence \(status)")
-            return 0.0
+            return (0.0, times)
         }
         
         track = trackPointer.memory
@@ -162,15 +196,26 @@ class DemoViewController: UIViewController {
             &tracklengthSize)
         if status != OSStatus(noErr) {
             print("Error getting track length \(status)")
-            return 0.0
+            return (0.0, times)
+        }
+        
+        
+        // No point in processing events if the track length is 0
+        if (trackLength == 0) {
+            return (0.0, times)
         }
         
         print("track length is \(trackLength) seconds for track \(trackNumber)")
         
-        
         // Create an iterator that will loop through the events in the track
         var iterator : MusicEventIterator = nil
         NewMusicEventIterator(track, &iterator);
+        
+        if status != OSStatus(noErr) {
+            print("Error creating track iterator \(status)")
+            return (0.0, times)
+        }
+
         
         var hasNext: DarwinBoolean = true
         var timestamp : MusicTimeStamp = 0
@@ -178,17 +223,15 @@ class DemoViewController: UIViewController {
         var eventDataSize: UInt32 = 0
         let eventData: UnsafeMutablePointer<UnsafePointer<Void>> = UnsafeMutablePointer.alloc(1)
         
-        let tempArray = NSMutableArray()
-
-        // TODO: check the event type is a marker
         status = MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         
+        // This would be strange if it happened.
+        // It would mean the track has a duration but nothng in it...
         if status != OSStatus(noErr) {
-            print("Error creating track iterator \(status)")
-            return 0.0
+            print("Error no event in the MIDI track\(status)")
+            return (trackLength, times)
         }
 
-        
         while (hasNext) {
             MusicEventIteratorGetEventInfo(iterator,
                 &timestamp,
@@ -196,22 +239,33 @@ class DemoViewController: UIViewController {
                 eventData,
                 &eventDataSize);
             
+            // TODO: check the event type is a marker
             let cmTime = CMTimeMakeWithSeconds( Float64(timestamp), 10)
             let cmValue = NSValue(CMTime: cmTime)
-            tempArray.addObject(cmValue)
+            times.append(cmValue)
+            
             MusicEventIteratorNextEvent(iterator);
             MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         }
-        self.times = tempArray as NSArray as! [NSValue]
         
-        return trackLength
+        return (trackLength, times)
     }
 
     
     // MARK: -
     private func playVideo(path: String) {
         
-        player = AVPlayer(URL: NSURL(fileURLWithPath: path))
+        guard let player:AVPlayer = AVPlayer(URL: NSURL(fileURLWithPath: path)) else  {
+            let filePath:NSString = path as NSString
+            let alertController = UIAlertController(title: "Error", message:
+                "Could not open the video \"\(filePath.lastPathComponent)\".", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        
         let playerController = AVPlayerViewController()
         playerController.player = player
         
@@ -246,11 +300,10 @@ class DemoViewController: UIViewController {
     }
     
     
-    @IBAction func showBrowser(sender: UIButton)  {
-        playVideo(videoPath)
+    @IBAction func playTheVideo(sender: UIButton)  {
+        playVideo(videoPath!)
     }
 }
-
 
 
 enum AppError : ErrorType {
