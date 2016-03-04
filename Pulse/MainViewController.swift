@@ -22,6 +22,11 @@ class MainViewController: UIViewController {
     }
 
     
+    @IBAction func handleTakeMeButtonPressed(sender: AnyObject) {
+        let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.sharedApplication().openURL(settingsUrl!)
+    }
+    
 
     @IBAction func startDemo(sender: AnyObject) {
     }

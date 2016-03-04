@@ -15,7 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        var itemDefaults = Dictionary<String,NSNumber>()
+        itemDefaults[PulseConstants.Preferences.useMIDIKeyPref] = NSNumber(bool: true)
+        
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.registerDefaults(itemDefaults)
+        
         return true
     }
 

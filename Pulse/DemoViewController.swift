@@ -28,6 +28,13 @@ class DemoViewController: UIViewController {
     var videoPath : String?
     var nf: NSNumberFormatter = NSNumberFormatter()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "defaultsChanged",
+            name: NSUserDefaultsDidChangeNotification, object: nil)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -35,7 +42,7 @@ class DemoViewController: UIViewController {
         if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
             videoPath = temp
         } else {
-            let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4")
+            let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mov")
             videoPath = path! as String
         }
         
@@ -302,6 +309,24 @@ class DemoViewController: UIViewController {
     
     @IBAction func playTheVideo(sender: UIButton)  {
         playVideo(videoPath!)
+    }
+    
+    // MARK: - 
+    func defaultsChanged() {
+        
+        if (self.player.rate != 0) {
+            return
+        }
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
+        if (useMIDI) {
+            usingDataLabel.text = "Using MIDI data"
+            readInSyncDataMIDI()
+        } else {
+            usingDataLabel.text = "Using txt data"
+            readInSyncDataText()
+        }
     }
 }
 
