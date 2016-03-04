@@ -31,7 +31,7 @@ class DemoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "defaultsChanged",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DemoViewController.defaultsChanged),
             name: NSUserDefaultsDidChangeNotification, object: nil)
     }
     
@@ -134,7 +134,7 @@ class DemoViewController: UIViewController {
         var musicSequence:MusicSequence = nil
         let status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
-            print("\(__LINE__) bad status \(status) creating sequence")
+            print("\(#line) bad status \(status) creating sequence")
         }
         
         let path = self.nameForDataFile(videoPath!, fileExtension: ".mid")

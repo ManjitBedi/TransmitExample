@@ -76,7 +76,7 @@ class MIDITestViewController: UIViewController {
         var musicSequence:MusicSequence = nil
         var status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
-            print("\(__LINE__) bad status \(status) creating sequence")
+            print("\(#line) bad status \(status) creating sequence")
         }
         
         let midiFileURL = NSBundle.mainBundle().URLForResource(fileName, withExtension: "mid")
@@ -85,7 +85,7 @@ class MIDITestViewController: UIViewController {
         status = MusicSequenceFileLoad(musicSequence, midiFileURL!, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
         
         if status != OSStatus(noErr) {
-            print("\(__LINE__) Error with opening the MIDI sequence \(status)")
+            print("\(#line) Error with opening the MIDI sequence \(status)")
             return false
         }
         
@@ -94,7 +94,7 @@ class MIDITestViewController: UIViewController {
 
         status = MusicSequenceGetTrackCount(musicSequence, iPointer)
         if status != OSStatus(noErr) {
-            print("\(__LINE__) Error getting number of tracks \(status)")
+            print("\(#line) Error getting number of tracks \(status)")
             return false
         }
         
@@ -138,7 +138,7 @@ class MIDITestViewController: UIViewController {
             &trackLength,
             &tracklengthSize)
         if status != OSStatus(noErr) {
-            print("\(__LINE__) Error getting track length \(status)")
+            print("\(#line) Error getting track length \(status)")
             return ""
         }
         
@@ -150,7 +150,7 @@ class MIDITestViewController: UIViewController {
         status = NewMusicEventIterator(track, &iterator);
         
         if status != OSStatus(noErr) {
-            print("\(__LINE__) Error creating iterator \(status)")
+            print("\(#line) Error creating iterator \(status)")
             return ""
         }
         
@@ -170,7 +170,7 @@ class MIDITestViewController: UIViewController {
                 &eventDataSize);
             
             if status != OSStatus(noErr) {
-                print("\(__LINE__) Error getting event from track \(status)")
+                print("\(#line) Error getting event from track \(status)")
             } else {
                 print("Event found! type: \(eventType) at time \(timestamp)\n");
             }

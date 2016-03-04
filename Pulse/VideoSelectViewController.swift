@@ -34,7 +34,7 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
             selectedMediaLabel.text = url.lastPathComponent
         } else {
             // the user has not selected a video previously, use the default video
-            selectedMediaLabel.text = PulseConstants.Media.defaultVideoName + ".mp4"
+            selectedMediaLabel.text = PulseConstants.Media.defaultVideoName + ".mov"
         }
         
         getMediaFilenames()
@@ -50,7 +50,7 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
             let directoryUrls = try  fileManager.contentsOfDirectoryAtURL(docsURL, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
             
             // Apply a filter to the list of files
-            bundleURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "m4v"  }
+            bundleURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "mov" }
 
             // And remove the paths from the URLs for display purposes
             mediaInBundle = bundleURLs.map{ $0.lastPathComponent! }
@@ -63,7 +63,7 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         do {
             let directoryUrls = try  NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsUrl, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
             
-            documentURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "m4v"  }
+            documentURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "mov" }
             mediaInDocumentsFolder = documentURLs.map{ $0.lastPathComponent! }
         } catch let error as NSError {
             print(error.localizedDescription)

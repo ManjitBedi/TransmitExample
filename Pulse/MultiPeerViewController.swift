@@ -40,7 +40,17 @@ class MultiPeerViewController: UIViewController, ConnectionManagerDelegate {
     func connected(connectionManager: ConnectionManager) {
         if let session = self.connectionManager?.session {
             self.sendNudgeButton?.enabled = true
-            self.peersTextView.text = session.connectedPeers.description
+            
+            var displayNames = ""
+            for peerID in session.connectedPeers {
+                if displayNames.isEmpty {
+                    displayNames = peerID.displayName
+                } else {
+                    displayNames += "\n\(peerID.displayName)"
+                }
+            }
+            
+            self.peersTextView.text = displayNames // session.connectedPeers.description
         } else {
             self.sendNudgeButton?.enabled = false
             self.peersTextView.text = ""
