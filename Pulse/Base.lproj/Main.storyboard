@@ -200,7 +200,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8jB-qi-IDJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="600" y="518"/>
+            <point key="canvasLocation" x="600" y="632"/>
         </scene>
         <!--Test View Controller-->
         <scene sceneID="Val-Rt-0gM">
@@ -281,7 +281,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XAT-fX-gkY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1308" y="518"/>
+            <point key="canvasLocation" x="1319" y="632"/>
         </scene>
         <!--Mulitpeer Connectivity-->
         <scene sceneID="UO8-7h-IzD">
@@ -365,7 +365,11 @@
                                 </constraints>
                                 <string key="text">Tap "Search for peers" on all the devices being used in the demo.  
 
-There can be a total of 8 devices connected using BlueTooth or the same WiFi network.</string>
+There can be a total of 8 including this one devices connected using BlueTooth or the same WiFi network.
+
+It may take a little bit of time for the devices to connect.
+
+The connected deivces will be shown in a list in the blue text view.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="default">
@@ -400,12 +404,18 @@ There can be a total of 8 devices connected using BlueTooth or the same WiFi net
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="connections 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5t-6e-hXN">
-                                <rect key="frame" x="246" y="559" width="109" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U24-Yi-KBs">
+                                <rect key="frame" x="0.0" y="122" width="600" height="343"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="343" id="Heg-Sv-dSb"/>
+                                    <constraint firstAttribute="width" constant="240" id="b8k-zu-I4O"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="b8k-zu-I4O"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZB-lv-Pdv">
                                 <rect key="frame" x="220" y="83" width="160" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -414,38 +424,57 @@ There can be a total of 8 devices connected using BlueTooth or the same WiFi net
                                     <action selector="playTheVideo:" destination="to9-e3-eiy" eventType="touchUpInside" id="oQ2-DP-uK7"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="file name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsz-E2-tok">
-                                <rect key="frame" x="200" y="505" width="200" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use MIDI data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5BV-CL-E8o">
-                                <rect key="frame" x="200" y="534" width="200" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="FOa-nh-9Ol"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Eso-8T-V8B">
+                                <rect key="frame" x="200" y="473" width="200" height="95"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="file name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsz-E2-tok">
+                                        <rect key="frame" x="65" y="0.0" width="70" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2xv-QY-udp">
+                                        <rect key="frame" x="60" y="21" width="80" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="time codes"/>
+                                        <connections>
+                                            <segue destination="yMY-F6-ZQx" kind="show" identifier="showTimes2" id="Ha1-tH-1yG"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use MIDI data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5BV-CL-E8o">
+                                        <rect key="frame" x="0.0" y="53" width="200" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="FOa-nh-9Ol"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="connections 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5t-6e-hXN">
+                                        <rect key="frame" x="46" y="74" width="109" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="0.5" colorSpace="calibratedRGB"/>
+                            </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="EZN-l8-nqj" firstAttribute="top" secondItem="a5t-6e-hXN" secondAttribute="bottom" constant="20" id="0TX-AF-Z18"/>
-                            <constraint firstItem="5BV-CL-E8o" firstAttribute="top" secondItem="fsz-E2-tok" secondAttribute="bottom" constant="8" id="3B6-cj-anB"/>
-                            <constraint firstItem="a5t-6e-hXN" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="9iH-Bx-qf9"/>
-                            <constraint firstItem="a5t-6e-hXN" firstAttribute="top" secondItem="5BV-CL-E8o" secondAttribute="bottom" constant="4" id="JZb-yA-lMK"/>
+                            <constraint firstItem="EZN-l8-nqj" firstAttribute="top" secondItem="Eso-8T-V8B" secondAttribute="bottom" constant="32" id="1cs-E8-3MU"/>
+                            <constraint firstAttribute="trailing" secondItem="U24-Yi-KBs" secondAttribute="trailing" id="HYo-vY-j1g"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="19" id="Pwk-cH-4B1"/>
-                            <constraint firstItem="5BV-CL-E8o" firstAttribute="centerX" secondItem="a5t-6e-hXN" secondAttribute="centerX" id="fHj-ck-CgD"/>
+                            <constraint firstItem="U24-Yi-KBs" firstAttribute="leading" secondItem="LeJ-5Z-zbl" secondAttribute="leading" id="Sb7-34-Fld"/>
+                            <constraint firstItem="U24-Yi-KBs" firstAttribute="top" secondItem="5Zn-jT-KHd" secondAttribute="bottom" constant="58" id="bhq-eM-CKx"/>
+                            <constraint firstItem="Eso-8T-V8B" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="c3C-9B-0mQ"/>
                             <constraint firstItem="ZZB-lv-Pdv" firstAttribute="centerX" secondItem="LeJ-5Z-zbl" secondAttribute="centerX" id="kTx-wI-3on"/>
-                            <constraint firstItem="5BV-CL-E8o" firstAttribute="leading" secondItem="fsz-E2-tok" secondAttribute="leading" id="skf-Fb-df1"/>
-                            <constraint firstItem="5BV-CL-E8o" firstAttribute="trailing" secondItem="fsz-E2-tok" secondAttribute="trailing" id="smC-14-VCN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Demo" id="Gez-dv-MgZ"/>
                     <connections>
                         <outlet property="connectionsLabel" destination="a5t-6e-hXN" id="kCi-Nm-gXQ"/>
+                        <outlet property="thumbnailmageView" destination="U24-Yi-KBs" id="W0d-3f-2cd"/>
                         <outlet property="usingDataLabel" destination="5BV-CL-E8o" id="kVJ-Xm-uzl"/>
                         <outlet property="videoFileNameLabel" destination="fsz-E2-tok" id="nzK-nj-rrr"/>
                     </connections>
@@ -456,6 +485,6 @@ There can be a total of 8 devices connected using BlueTooth or the same WiFi net
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="jUP-N4-19G"/>
+        <segue reference="Ha1-tH-1yG"/>
     </inferredMetricsTieBreakers>
 </document>

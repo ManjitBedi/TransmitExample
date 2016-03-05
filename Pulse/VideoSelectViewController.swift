@@ -101,9 +101,6 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             cell.textLabel?.text = mediaInDocumentsFolder[indexPath.row] as String
         }
-
-        // TODO: maybe display some info about the file....
-        cell.detailTextLabel?.text = ""
         
         return cell
     }

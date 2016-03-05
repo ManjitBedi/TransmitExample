@@ -20,6 +20,7 @@ class DemoViewController: UIViewController {
     @IBOutlet weak var connectionsLabel: UILabel!
     @IBOutlet weak var videoFileNameLabel: UILabel!
     @IBOutlet weak var usingDataLabel: UILabel!
+    @IBOutlet weak var thumbnailmageView: UIImageView!
     
     var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
@@ -31,7 +32,7 @@ class DemoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DemoViewController.defaultsChanged),
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "defaultsChanged",
             name: NSUserDefaultsDidChangeNotification, object: nil)
     }
     
@@ -64,6 +65,15 @@ class DemoViewController: UIViewController {
             connectionsLabel.text = "connections \(peers.count)"
         } else {
             connectionsLabel.text = "connections 0"
+        }
+
+        let fileURL = NSURL(fileURLWithPath: videoPath!)
+        let asset = AVAsset(URL: fileURL)
+        let assetImgGenerate = AVAssetImageGenerator(asset: asset)
+        assetImgGenerate.appliesPreferredTrackTransform = true
+        let time = CMTimeMake(1, asset.duration.timescale)
+        if let cgImage = try? assetImgGenerate.copyCGImageAtTime(time, actualTime: nil) {
+            thumbnailmageView.image = UIImage(CGImage: cgImage)
         }
     }
     
@@ -134,7 +144,7 @@ class DemoViewController: UIViewController {
         var musicSequence:MusicSequence = nil
         let status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
-            print("\(#line) bad status \(status) creating sequence")
+            print("\(__LINE__) bad status \(status) creating sequence")
         }
         
         let path = self.nameForDataFile(videoPath!, fileExtension: ".mid")
@@ -328,6 +338,20 @@ class DemoViewController: UIViewController {
             readInSyncDataText()
         }
     }
+    
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let timeCodeVC = segue.destinationViewController as! TimeCodeTableViewController
+        
+        let timeStrings:[String] = times.map {
+            let time =  $0.CMTimeValue
+            return String(CMTimeGetSeconds(time))
+        }
+
+        timeCodeVC.syncArray = timeStrings
+     }
 }
 
 

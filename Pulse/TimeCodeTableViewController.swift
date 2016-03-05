@@ -10,42 +10,17 @@ import UIKit
 
 class TimeCodeTableViewController: UITableViewController {
 
-    var syncData : NSString = ""
-    var syncArray : [NSString] = []
+    internal var syncArray : [NSString] = []
     var videoPath : String = "'"
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
-            videoPath = temp as String
-        } else {
-            let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mp4")
-            videoPath = path! as String
-        }
-
-        var path : String = ""
-        if (videoPath.rangeOfString(".mp4") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".mp4", withString:".txt")
-        } else if ( videoPath.rangeOfString(".m4v") != nil) {
-            path = videoPath.stringByReplacingOccurrencesOfString(".m4v", withString:".txt")
-        }
-        
-        // read in the text file
-        do {
-            syncData = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-            syncArray = syncData.componentsSeparatedByString("\n")
-            self.tableView.reloadData()
-        }
-        catch {/* error handling here */}
+        self.tableView.reloadData()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
 
     // MARK: - Table view data source
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
