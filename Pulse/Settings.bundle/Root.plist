@@ -22,6 +22,22 @@
 			<key>DefaultValue</key>
 			<true/>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Vibration on</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Vibrations</string>
+			<key>Key</key>
+			<string>com.noorg.pulse.vibrationsOn</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
 	</array>
 </dict>
 </plist>

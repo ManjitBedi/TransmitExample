@@ -27,6 +27,7 @@ class DemoViewController: UIViewController {
     var syncArray : [NSString] = []
     var times : [NSValue] = []
     var videoPath : String?
+    var vibrations: Bool = true
     var nf: NSNumberFormatter = NSNumberFormatter()
     
     override func viewDidLoad() {
@@ -47,6 +48,8 @@ class DemoViewController: UIViewController {
             videoPath = path! as String
         }
         
+        self.vibrations = defaults.boolForKey(PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
+        
         print("Load video with name \"\(videoPath)\"")
         let url = NSURL(fileURLWithPath: videoPath!)
         videoFileNameLabel.text = url.lastPathComponent
@@ -59,6 +62,8 @@ class DemoViewController: UIViewController {
             usingDataLabel.text = "Using txt data"
             readInSyncDataText()
         }
+        
+        
             
         connectionManager = ConnectionManager.sharedManager
         if let peers = connectionManager?.session.connectedPeers {
@@ -297,7 +302,6 @@ class DemoViewController: UIViewController {
     }
     
     private func createSyncEvents(player: AVPlayer) {
-        
         nf = NSNumberFormatter()
         nf.numberStyle = NSNumberFormatterStyle.DecimalStyle
         nf.maximumFractionDigits = 2
@@ -310,6 +314,12 @@ class DemoViewController: UIViewController {
                 // the debug saying "sync event at time Optional(7)" etc...
                 if let timeString = nf!.stringFromNumber(timeInSeconds) {
                     print("sync event at time \(timeString)");
+                }
+            
+                if self.vibrations {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+                    }
                 }
             
                 self.connectionManager!.broadcastEvent()
@@ -337,6 +347,8 @@ class DemoViewController: UIViewController {
             usingDataLabel.text = "Using txt data"
             readInSyncDataText()
         }
+        
+        self.vibrations = defaults.boolForKey(PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
     }
     
      // MARK: - Navigation
