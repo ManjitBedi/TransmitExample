@@ -102,6 +102,8 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
             cell.textLabel?.text = mediaInDocumentsFolder[indexPath.row] as String
         }
         
+        cell.detailTextLabel?.text = ""
+        
         return cell
     }
     

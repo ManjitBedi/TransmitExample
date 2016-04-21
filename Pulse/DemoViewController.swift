@@ -360,7 +360,7 @@ class DemoViewController: UIViewController {
         
         let timeStrings:[String] = times.map {
             let time =  $0.CMTimeValue
-            return String(format: "%.02f", CMTimeGetSeconds(time))
+            return String(format: "%.03f", CMTimeGetSeconds(time))
         }
 
         timeCodeVC.syncArray = timeStrings
