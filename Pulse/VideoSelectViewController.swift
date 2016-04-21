@@ -13,6 +13,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class VideoSelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -20,10 +21,10 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var tableView: UITableView!
 
     weak var connectionManager = ConnectionManager.sharedManager
-    var mediaInBundle : [NSString] = []
-    var mediaInDocumentsFolder : [NSString] = []
-    var bundleURLs : [NSURL] = []
-    var documentURLs : [NSURL] = []
+    var mediaInBundle: [NSString] = []
+    var mediaInDocumentsFolder: [NSString] = []
+    var bundleURLs: [NSURL] = []
+    var documentURLs: [NSURL] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,16 +94,25 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
+    func getMovieMetaData(url: NSURL)-> String {
+        let asset = AVURLAsset(URL: url)
+        //let commonMetaData = asset.commonMetadata
+        let durationInSeconds = Int(CMTimeGetSeconds(asset.duration))
+        let data:String = ("\(durationInSeconds/60) minutes \(durationInSeconds%60) seconds")
+        
+        return data
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("FilenameCell", forIndexPath: indexPath)
     
         if (indexPath.section == 0 ) {
             cell.textLabel?.text = mediaInBundle[indexPath.row] as String
+            cell.detailTextLabel?.text = getMovieMetaData(bundleURLs[indexPath.row])
         } else {
             cell.textLabel?.text = mediaInDocumentsFolder[indexPath.row] as String
+            cell.detailTextLabel?.text = getMovieMetaData(documentURLs[indexPath.row])
         }
-        
-        cell.detailTextLabel?.text = ""
         
         return cell
     }
