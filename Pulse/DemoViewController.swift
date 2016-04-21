@@ -150,7 +150,7 @@ class DemoViewController: UIViewController {
         var musicSequence:MusicSequence = nil
         let status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
-            print("\(__LINE__) bad status \(status) creating sequence")
+            print("\(#line) bad status \(status) creating sequence")
         }
         
         let path = self.nameForDataFile(videoPath!, fileExtension: ".mid")
