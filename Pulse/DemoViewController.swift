@@ -72,6 +72,7 @@ class DemoViewController: UIViewController {
             connectionsLabel.text = "connections 0"
         }
 
+        // Create a poster image from the video
         let fileURL = NSURL(fileURLWithPath: videoPath!)
         let asset = AVAsset(URL: fileURL)
         let assetImgGenerate = AVAssetImageGenerator(asset: asset)
@@ -129,7 +130,7 @@ class DemoViewController: UIViewController {
             
             // convert the strings to time and then encode the times as an NSValue to then add to an array of time values
             for timeString in syncArray {
-                let cmTime = CMTimeMake(timeString.longLongValue, 1000)
+                let cmTime = CMTimeMake(timeString.longLongValue, 10000)
                 let cmValue = NSValue(CMTime: cmTime)
                 tempArray.addObject(cmValue)
             }
@@ -262,7 +263,7 @@ class DemoViewController: UIViewController {
                 &eventDataSize);
             
             // TODO: check the event type is a marker
-            let cmTime = CMTimeMakeWithSeconds( Float64(timestamp), 10)
+            let cmTime = CMTimeMakeWithSeconds( Float64(timestamp), 1000)
             let cmValue = NSValue(CMTime: cmTime)
             times.append(cmValue)
             
@@ -359,7 +360,7 @@ class DemoViewController: UIViewController {
         
         let timeStrings:[String] = times.map {
             let time =  $0.CMTimeValue
-            return String(CMTimeGetSeconds(time))
+            return String(format: "%.02f", CMTimeGetSeconds(time))
         }
 
         timeCodeVC.syncArray = timeStrings

@@ -5,21 +5,19 @@
 //  Created by Manjit Bedi on 2015-12-15.
 //  Copyright © 2015 No Org. All rights reserved.
 //
+// Note: this works only with strings read in from a txt file!
 
 import UIKit
 
 class TimeCodeTableViewController: UITableViewController {
 
-    internal var syncArray : [NSString] = []
+    internal var syncArray: [NSString] = []
     var videoPath : String = "'"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         self.tableView.reloadData()
     }
-
 
 
     // MARK: - Table view data source
