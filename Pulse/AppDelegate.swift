@@ -16,9 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        var itemDefaults = Dictionary<String,NSNumber>()
+        var itemDefaults: [String: NSNumber] = Dictionary()
         itemDefaults[PulseConstants.Preferences.useMIDIKeyPref] = NSNumber(bool: true)
-        
+        itemDefaults[PulseConstants.Preferences.vibrationsOnKeyPref] = NSNumber(bool: true)
+
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.registerDefaults(itemDefaults)
         

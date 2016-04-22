@@ -50,7 +50,9 @@ class DemoViewController: UIViewController {
         
         self.vibrations = defaults.boolForKey(PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
         
+        print ("vibrations \(self.vibrations)")
         print("Load video with name \"\(videoPath)\"")
+        
         let url = NSURL(fileURLWithPath: videoPath!)
         videoFileNameLabel.text = url.lastPathComponent
         
