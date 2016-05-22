@@ -33,7 +33,7 @@ class DemoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "defaultsChanged",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DemoViewController.defaultsChanged),
             name: NSUserDefaultsDidChangeNotification, object: nil)
     }
     
@@ -310,18 +310,18 @@ class DemoViewController: UIViewController {
         nf.maximumFractionDigits = 2
         nf.minimumFractionDigits = 2
         
+        print("vibrate on playing device: \(vibrations)")
+        
         player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: { [weak nf] in
                 let timeInSeconds : Float64  =  CMTimeGetSeconds(player.currentTime())
             
-                // as the number formatter is an optional; need to wrap the code like this to avoid
-                // the debug saying "sync event at time Optional(7)" etc...
                 if let timeString = nf!.stringFromNumber(timeInSeconds) {
                     print("sync event at time \(timeString)");
                 }
             
                 if self.vibrations {
                     dispatch_async(dispatch_get_main_queue()) {
-                        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     }
                 }
             

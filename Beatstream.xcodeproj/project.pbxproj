@@ -28,7 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		781CB4481C1A0FF00010CC55 /* Pulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		781CB4481C1A0FF00010CC55 /* Beatstream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beatstream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		781CB44B1C1A0FF00010CC55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		781CB44D1C1A0FF00010CC55 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		781CB4501C1A0FF00010CC55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 		781CB4491C1A0FF00010CC55 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				781CB4481C1A0FF00010CC55 /* Pulse.app */,
+				781CB4481C1A0FF00010CC55 /* Beatstream.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,9 +114,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		781CB4471C1A0FF00010CC55 /* Pulse */ = {
+		781CB4471C1A0FF00010CC55 /* Beatstream */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "Pulse" */;
+			buildConfigurationList = 781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "Beatstream" */;
 			buildPhases = (
 				781CB4441C1A0FF00010CC55 /* Sources */,
 				781CB4451C1A0FF00010CC55 /* Frameworks */,
@@ -126,9 +126,9 @@
 			);
 			dependencies = (
 			);
-			name = Pulse;
+			name = Beatstream;
 			productName = Pulse;
-			productReference = 781CB4481C1A0FF00010CC55 /* Pulse.app */;
+			productReference = 781CB4481C1A0FF00010CC55 /* Beatstream.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -147,7 +147,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "Pulse" */;
+			buildConfigurationList = 781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "Beatstream" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -160,7 +160,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				781CB4471C1A0FF00010CC55 /* Pulse */,
+				781CB4471C1A0FF00010CC55 /* Beatstream */,
 			);
 		};
 /* End PBXProject section */
@@ -259,7 +259,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -298,7 +298,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -312,9 +312,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Pulse/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.noorg.Pulse;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.noorg.Beatstream;
+				PRODUCT_NAME = Beatstream;
 			};
 			name = Debug;
 		};
@@ -324,16 +325,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Pulse/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.noorg.Pulse;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.noorg.Beatstream;
+				PRODUCT_NAME = Beatstream;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "Pulse" */ = {
+		781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "Beatstream" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				781CB4581C1A0FF00010CC55 /* Debug */,
@@ -342,7 +344,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "Pulse" */ = {
+		781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "Beatstream" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				781CB45B1C1A0FF00010CC55 /* Debug */,
