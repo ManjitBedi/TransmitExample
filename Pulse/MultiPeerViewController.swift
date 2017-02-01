@@ -27,7 +27,7 @@ class MultiPeerViewController: UIViewController, ConnectionManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func showBrowser(sender: UIButton) {
+    @IBAction func showBrowser(_ sender: UIButton) {
         // Show the browser view controller
         self.connectionManager?.showBrowser(self)
     }
@@ -37,9 +37,9 @@ class MultiPeerViewController: UIViewController, ConnectionManagerDelegate {
     }
     
     // MARK: delegate methods
-    func connected(connectionManager: ConnectionManager) {
+    func connected(_ connectionManager: ConnectionManager) {
         if let session = self.connectionManager?.session {
-            self.sendNudgeButton?.enabled = true
+            self.sendNudgeButton?.isEnabled = true
             
             var displayNames = ""
             for peerID in session.connectedPeers {
@@ -52,7 +52,7 @@ class MultiPeerViewController: UIViewController, ConnectionManagerDelegate {
             
             self.peersTextView.text = displayNames // session.connectedPeers.description
         } else {
-            self.sendNudgeButton?.enabled = false
+            self.sendNudgeButton?.isEnabled = false
             self.peersTextView.text = ""
         }
     }

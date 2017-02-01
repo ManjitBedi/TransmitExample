@@ -28,35 +28,35 @@ class DemoViewController: UIViewController {
     var times : [NSValue] = []
     var videoPath : String?
     var vibrations: Bool = true
-    var nf: NSNumberFormatter = NSNumberFormatter()
+    var nf: NumberFormatter = NumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DemoViewController.defaultsChanged),
-            name: NSUserDefaultsDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DemoViewController.defaultsChanged),
+            name: UserDefaults.didChangeNotification, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let temp = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
+        let defaults = UserDefaults.standard
+        if let temp = defaults.string(forKey: PulseConstants.Preferences.mediaKeyPref) {
             videoPath = temp
         } else {
-            let path = NSBundle.mainBundle().pathForResource(PulseConstants.Media.defaultVideoName, ofType:"mov")
+            let path = Bundle.main.path(forResource: PulseConstants.Media.defaultVideoName, ofType:"mov")
             videoPath = path! as String
         }
         
-        self.vibrations = defaults.boolForKey(PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
+        self.vibrations = defaults.bool(forKey: PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
         
         print ("vibrations \(self.vibrations)")
         print("Load video with name \"\(videoPath)\"")
         
-        let url = NSURL(fileURLWithPath: videoPath!)
+        let url = URL(fileURLWithPath: videoPath!)
         videoFileNameLabel.text = url.lastPathComponent
         
-        let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
+        let useMIDI = defaults.bool(forKey: PulseConstants.Preferences.useMIDIKeyPref)
         if (useMIDI) {
             usingDataLabel.text = "Using MIDI data"
             readInSyncDataMIDI()
@@ -75,19 +75,19 @@ class DemoViewController: UIViewController {
         }
 
         // Create a poster image from the video
-        let fileURL = NSURL(fileURLWithPath: videoPath!)
-        let asset = AVAsset(URL: fileURL)
+        let fileURL = URL(fileURLWithPath: videoPath!)
+        let asset = AVAsset(url: fileURL)
         let assetImgGenerate = AVAssetImageGenerator(asset: asset)
         assetImgGenerate.appliesPreferredTrackTransform = true
         let time = CMTimeMake(1, asset.duration.timescale)
-        if let cgImage = try? assetImgGenerate.copyCGImageAtTime(time, actualTime: nil) {
-            thumbnailmageView.image = UIImage(CGImage: cgImage)
+        if let cgImage = try? assetImgGenerate.copyCGImage(at: time, actualTime: nil) {
+            thumbnailmageView.image = UIImage(cgImage: cgImage)
         }
     }
     
-    private func nameForDataFile(videoFileName:String, fileExtension:String) -> String {
+    fileprivate func nameForDataFile(_ videoFileName:String, fileExtension:String) -> String {
         var path : String = ""
-        let url = NSURL(fileURLWithPath: videoFileName)
+        let url = URL(fileURLWithPath: videoFileName)
 
         let ext = url.pathExtension
         
@@ -98,18 +98,18 @@ class DemoViewController: UIViewController {
             var components = url.pathComponents
             
             // the file name is the last time in array
-            let position = (components?.count)! - 1
-            let temp = components![position]
+            let position = (components.count) - 1
+            let temp = components[position]
             
             // split the file name at the period character
             var fileNameSplit = temp.characters.split{$0 == "."}.map(String.init)
             fileNameSplit[1] = fileExtension
             
             // create a new file name
-            components![position] = fileNameSplit[0]+fileNameSplit[1]
+            components[position] = fileNameSplit[0]+fileNameSplit[1]
 
             // joins the path components back together
-            let joinedString = components!.joinWithSeparator("/")
+            let joinedString = components.joined(separator: "/")
             // Ok but we need to trim the extra forward slash
             path = String(joinedString.characters.dropFirst())
             
@@ -120,21 +120,21 @@ class DemoViewController: UIViewController {
         return path
     }
     
-    private func readInSyncDataText() {
+    fileprivate func readInSyncDataText() {
         
         let path = self.nameForDataFile(videoPath!, fileExtension: ".txt")
         // read in the text file
         do {
-            syncData = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-            syncArray = syncData.componentsSeparatedByString("\n")
+            syncData = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue)
+            syncArray = syncData.components(separatedBy: "\n")
             
             let tempArray = NSMutableArray()
             
             // convert the strings to time and then encode the times as an NSValue to then add to an array of time values
             for timeString in syncArray {
                 let cmTime = CMTimeMake(timeString.longLongValue, 10000)
-                let cmValue = NSValue(CMTime: cmTime)
-                tempArray.addObject(cmValue)
+                let cmValue = NSValue(time: cmTime)
+                tempArray.add(cmValue)
             }
             
             self.times = tempArray as NSArray as! [NSValue]
@@ -142,43 +142,43 @@ class DemoViewController: UIViewController {
         catch {
             print("could not open data file")
             let alertController = UIAlertController(title: "Error", message:
-                "Could not open the data file.", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            self.presentViewController(alertController, animated: true, completion: nil)
+                "Could not open the data file.", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
-    private func readInSyncDataMIDI() {
-        var musicSequence:MusicSequence = nil
+    fileprivate func readInSyncDataMIDI() {
+        var musicSequence:MusicSequence? = nil
         let status = NewMusicSequence(&musicSequence)
         if status != OSStatus(noErr) {
             print("\(#line) bad status \(status) creating sequence")
         }
         
         let path = self.nameForDataFile(videoPath!, fileExtension: ".mid")
-        let midiFileURL = NSURL(fileURLWithPath: path)
+        let midiFileURL = URL(fileURLWithPath: path)
         
         // Load a MIDI file
-        MusicSequenceFileLoad(musicSequence, midiFileURL, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
+        MusicSequenceFileLoad(musicSequence!, midiFileURL as CFURL, MusicSequenceFileTypeID.midiType, MusicSequenceLoadFlags())
         
         var numberOfTracks: UInt32
-        let iPointer: UnsafeMutablePointer<UInt32> = UnsafeMutablePointer.alloc(1)
+        let iPointer: UnsafeMutablePointer<UInt32> = UnsafeMutablePointer.allocate(capacity: 1)
         
-        MusicSequenceGetTrackCount(musicSequence, iPointer)
-        numberOfTracks = iPointer.memory
-        iPointer.dealloc(1)
+        MusicSequenceGetTrackCount(musicSequence!, iPointer)
+        numberOfTracks = iPointer.pointee
+        iPointer.deallocate(capacity: 1)
         
         // Not sure about this, there seems to be at least 2 tracks.
         // The first track is just a MIDI header.
         if numberOfTracks == 0 {
             print("WTF, the MIDI file is shit; there aren't any tracks")
         } else {
-            let (trackLength, events) = self.getTrackInfo(musicSequence, trackNumber: 0)
+            let (trackLength, events) = self.getTrackInfo(musicSequence!, trackNumber: 0)
             
             // We only want there to be one track in the sequence!
             if (trackLength == 0.0 && numberOfTracks > 1) {
                 for i:UInt32 in 1 ..< numberOfTracks {
-                    let (trackLength, events) = self.getTrackInfo(musicSequence, trackNumber: i)
+                    let (trackLength, events) = self.getTrackInfo(musicSequence!, trackNumber: i)
                     
                     if (trackLength > 0.0) {
                         self.times = events
@@ -191,17 +191,17 @@ class DemoViewController: UIViewController {
             
             if self.times.count == 0 {
                 let alertController = UIAlertController(title: "Error", message:
-                    "There are no timing events.", preferredStyle: UIAlertControllerStyle.Alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-                self.presentViewController(alertController, animated: true, completion: nil)
+                    "There are no timing events.", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }
     
     
-    func getTrackInfo(musicSequence:MusicSequence, trackNumber:UInt32) -> (length: MusicTimeStamp, events:[NSValue]) {
-        var track: MusicTrack = nil
-        let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.alloc(1)
+    func getTrackInfo(_ musicSequence:MusicSequence, trackNumber:UInt32) -> (length: MusicTimeStamp, events:[NSValue]) {
+        var track: MusicTrack? = nil
+        let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.allocate(capacity: 1)
         var status = MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
         var times:[NSValue] = []
         
@@ -210,8 +210,8 @@ class DemoViewController: UIViewController {
             return (0.0, times)
         }
         
-        track = trackPointer.memory
-        trackPointer.dealloc(1)
+        track = trackPointer.pointee
+        trackPointer.deallocate(capacity: 1)
         
         var trackLength = MusicTimeStamp(0)
         var tracklengthSize = UInt32(0)
@@ -233,8 +233,8 @@ class DemoViewController: UIViewController {
         print("track length is \(trackLength) seconds for track \(trackNumber)")
         
         // Create an iterator that will loop through the events in the track
-        var iterator : MusicEventIterator = nil
-        NewMusicEventIterator(track, &iterator);
+        var iterator : MusicEventIterator? = nil
+        NewMusicEventIterator(track!, &iterator);
         
         if status != OSStatus(noErr) {
             print("Error creating track iterator \(status)")
@@ -246,7 +246,7 @@ class DemoViewController: UIViewController {
         var timestamp : MusicTimeStamp = 0
         var eventType : MusicEventType = 0
         var eventDataSize: UInt32 = 0
-        let eventData: UnsafeMutablePointer<UnsafePointer<Void>> = UnsafeMutablePointer.alloc(1)
+        let eventData: UnsafeMutablePointer<UnsafeRawPointer> = UnsafeMutablePointer.allocate(capacity: 1)
         
         status = MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
         
@@ -257,8 +257,8 @@ class DemoViewController: UIViewController {
             return (trackLength, times)
         }
 
-        while (hasNext) {
-            MusicEventIteratorGetEventInfo(iterator,
+        while (hasNext).boolValue {
+            MusicEventIteratorGetEventInfo(iterator!,
                 &timestamp,
                 &eventType,
                 eventData,
@@ -266,11 +266,11 @@ class DemoViewController: UIViewController {
             
             // TODO: check the event type is a marker
             let cmTime = CMTimeMakeWithSeconds( Float64(timestamp), 1000)
-            let cmValue = NSValue(CMTime: cmTime)
+            let cmValue = NSValue(time: cmTime)
             times.append(cmValue)
             
-            MusicEventIteratorNextEvent(iterator);
-            MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
+            MusicEventIteratorNextEvent(iterator!);
+            MusicEventIteratorHasCurrentEvent(iterator!, &hasNext);
         }
         
         return (trackLength, times)
@@ -278,15 +278,15 @@ class DemoViewController: UIViewController {
 
     
     // MARK: -
-    private func playVideo(path: String) {
+    fileprivate func playVideo(_ path: String) {
         
-        guard let player:AVPlayer = AVPlayer(URL: NSURL(fileURLWithPath: path)) else  {
+        guard let player:AVPlayer = AVPlayer(url: URL(fileURLWithPath: path)) else  {
             let filePath:NSString = path as NSString
             let alertController = UIAlertController(title: "Error", message:
-                "Could not open the video \"\(filePath.lastPathComponent)\".", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                "Could not open the video \"\(filePath.lastPathComponent)\".", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
             return
         }
         
@@ -299,28 +299,28 @@ class DemoViewController: UIViewController {
             createSyncEvents(player)
         }
         
-        self.presentViewController(playerController, animated: true) {
+        self.present(playerController, animated: true) {
             self.player.play()
         }
     }
     
-    private func createSyncEvents(player: AVPlayer) {
-        nf = NSNumberFormatter()
-        nf.numberStyle = NSNumberFormatterStyle.DecimalStyle
+    fileprivate func createSyncEvents(_ player: AVPlayer) {
+        nf = NumberFormatter()
+        nf.numberStyle = NumberFormatter.Style.decimal
         nf.maximumFractionDigits = 2
         nf.minimumFractionDigits = 2
         
         print("vibrate on playing device: \(vibrations)")
         
-        player.addBoundaryTimeObserverForTimes(self.times, queue: dispatch_get_main_queue(), usingBlock: { [weak nf] in
+        player.addBoundaryTimeObserver(forTimes: self.times, queue: DispatchQueue.main, using: { [weak nf] in
                 let timeInSeconds : Float64  =  CMTimeGetSeconds(player.currentTime())
             
-                if let timeString = nf!.stringFromNumber(timeInSeconds) {
+                if let timeString = nf!.string(from: NSNumber(timeInSeconds)) {
                     print("sync event at time \(timeString)");
                 }
             
                 if self.vibrations {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     }
                 }
@@ -330,7 +330,7 @@ class DemoViewController: UIViewController {
     }
     
     
-    @IBAction func playTheVideo(sender: UIButton)  {
+    @IBAction func playTheVideo(_ sender: UIButton)  {
         playVideo(videoPath!)
     }
     
@@ -341,8 +341,8 @@ class DemoViewController: UIViewController {
             return
         }
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let useMIDI = defaults.boolForKey(PulseConstants.Preferences.useMIDIKeyPref)
+        let defaults = UserDefaults.standard
+        let useMIDI = defaults.bool(forKey: PulseConstants.Preferences.useMIDIKeyPref)
         if (useMIDI) {
             usingDataLabel.text = "Using MIDI data"
             readInSyncDataMIDI()
@@ -351,25 +351,25 @@ class DemoViewController: UIViewController {
             readInSyncDataText()
         }
         
-        self.vibrations = defaults.boolForKey(PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
+        self.vibrations = defaults.bool(forKey: PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
     }
     
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let timeCodeVC = segue.destinationViewController as! TimeCodeTableViewController
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let timeCodeVC = segue.destination as! TimeCodeTableViewController
         
         let timeStrings:[String] = times.map {
-            let time =  $0.CMTimeValue
+            let time =  $0.timeValue
             return String(format: "%.03f", CMTimeGetSeconds(time))
         }
 
-        timeCodeVC.syncArray = timeStrings
+        timeCodeVC.syncArray = timeStrings as [NSString]
      }
 }
 
 
-enum AppError : ErrorType {
-    case InvalidResource(String, String)
+enum AppError : Error {
+    case invalidResource(String, String)
 }

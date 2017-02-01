@@ -22,19 +22,19 @@ class MainViewController: UIViewController {
     }
 
     
-    @IBAction func handleTakeMeButtonPressed(sender: AnyObject) {
-        let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
-        UIApplication.sharedApplication().openURL(settingsUrl!)
+    @IBAction func handleTakeMeButtonPressed(_ sender: AnyObject) {
+        let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.shared.openURL(settingsUrl!)
     }
     
 
-    @IBAction func startDemo(sender: AnyObject) {
+    @IBAction func startDemo(_ sender: AnyObject) {
     }
 
-    @IBAction func selectVideo(sender: AnyObject) {
+    @IBAction func selectVideo(_ sender: AnyObject) {
     }
     
-    @IBAction func connectivity(sender: AnyObject) {
+    @IBAction func connectivity(_ sender: AnyObject) {
     }
 }
 

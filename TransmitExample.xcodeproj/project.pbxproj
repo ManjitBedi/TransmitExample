@@ -28,7 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		781CB4481C1A0FF00010CC55 /* Beatstream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beatstream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		781CB4481C1A0FF00010CC55 /* TransmitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TransmitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		781CB44B1C1A0FF00010CC55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		781CB44D1C1A0FF00010CC55 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		781CB4501C1A0FF00010CC55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -65,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				786BF92D1C1B65C800F4D2AE /* Media */,
-				781CB44A1C1A0FF00010CC55 /* Pulse */,
+				781CB44A1C1A0FF00010CC55 /* TransmitExample */,
 				781CB4491C1A0FF00010CC55 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,12 +73,12 @@
 		781CB4491C1A0FF00010CC55 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				781CB4481C1A0FF00010CC55 /* Beatstream.app */,
+				781CB4481C1A0FF00010CC55 /* TransmitExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		781CB44A1C1A0FF00010CC55 /* Pulse */ = {
+		781CB44A1C1A0FF00010CC55 /* TransmitExample */ = {
 			isa = PBXGroup;
 			children = (
 				786BD3801C208A7900B889FB /* Constants.swift */,
@@ -98,6 +98,7 @@
 				78D365C71C52FB2E00575F7D /* Settings.bundle */,
 				781CB4571C1A0FF00010CC55 /* Info.plist */,
 			);
+			name = TransmitExample;
 			path = Pulse;
 			sourceTree = "<group>";
 		};
@@ -114,9 +115,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		781CB4471C1A0FF00010CC55 /* Beatstream */ = {
+		781CB4471C1A0FF00010CC55 /* TransmitExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "Beatstream" */;
+			buildConfigurationList = 781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "TransmitExample" */;
 			buildPhases = (
 				781CB4441C1A0FF00010CC55 /* Sources */,
 				781CB4451C1A0FF00010CC55 /* Frameworks */,
@@ -126,9 +127,9 @@
 			);
 			dependencies = (
 			);
-			name = Beatstream;
+			name = TransmitExample;
 			productName = Pulse;
-			productReference = 781CB4481C1A0FF00010CC55 /* Beatstream.app */;
+			productReference = 781CB4481C1A0FF00010CC55 /* TransmitExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -138,16 +139,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "No Org";
 				TargetAttributes = {
 					781CB4471C1A0FF00010CC55 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = FPL5896D45;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
-			buildConfigurationList = 781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "Beatstream" */;
+			buildConfigurationList = 781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "TransmitExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -160,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				781CB4471C1A0FF00010CC55 /* Beatstream */,
+				781CB4471C1A0FF00010CC55 /* TransmitExample */,
 			);
 		};
 /* End PBXProject section */
@@ -236,8 +238,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -281,8 +285,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -301,6 +307,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -315,7 +322,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.noorg.Beatstream;
-				PRODUCT_NAME = Beatstream;
+				PRODUCT_NAME = TransmitExample;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -328,14 +336,15 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.noorg.Beatstream;
-				PRODUCT_NAME = Beatstream;
+				PRODUCT_NAME = TransmitExample;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "Beatstream" */ = {
+		781CB4431C1A0FEF0010CC55 /* Build configuration list for PBXProject "TransmitExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				781CB4581C1A0FF00010CC55 /* Debug */,
@@ -344,7 +353,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "Beatstream" */ = {
+		781CB45A1C1A0FF00010CC55 /* Build configuration list for PBXNativeTarget "TransmitExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				781CB45B1C1A0FF00010CC55 /* Debug */,

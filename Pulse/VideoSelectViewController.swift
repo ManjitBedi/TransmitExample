@@ -23,15 +23,15 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
     weak var connectionManager = ConnectionManager.sharedManager
     var mediaInBundle: [NSString] = []
     var mediaInDocumentsFolder: [NSString] = []
-    var bundleURLs: [NSURL] = []
-    var documentURLs: [NSURL] = []
+    var bundleURLs: [URL] = []
+    var documentURLs: [URL] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let temp : String = defaults.stringForKey(PulseConstants.Preferences.mediaKeyPref) {
-            let url : NSURL =  NSURL(fileURLWithPath: temp)
+        let defaults = UserDefaults.standard
+        if let temp : String = defaults.string(forKey: PulseConstants.Preferences.mediaKeyPref) {
+            let url : URL =  URL(fileURLWithPath: temp)
             selectedMediaLabel.text = url.lastPathComponent
         } else {
             // the user has not selected a video previously, use the default video
@@ -44,28 +44,28 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
     func getMediaFilenames() {
         
         // in the app bundle
-        let docsURL = NSBundle.mainBundle().resourceURL!
-        let fileManager = NSFileManager.defaultManager()
+        let docsURL = Bundle.main.resourceURL!
+        let fileManager = FileManager.default
         
         do {
-            let directoryUrls = try  fileManager.contentsOfDirectoryAtURL(docsURL, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
+            let directoryUrls = try  fileManager.contentsOfDirectory(at: docsURL, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions())
             
             // Apply a filter to the list of files
-            bundleURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "mov" }
+            bundleURLs = directoryUrls.filter(){ $0.pathExtension == "mp4" || $0.pathExtension == "mov" }
 
             // And remove the paths from the URLs for display purposes
-            mediaInBundle = bundleURLs.map{ $0.lastPathComponent! }
+            mediaInBundle = bundleURLs.map{ $0.lastPathComponent }
         } catch let error as NSError  {
             print(error.localizedDescription)
         }
     
         // in the documents folder
-        let documentsUrl =  fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        let documentsUrl =  fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         do {
-            let directoryUrls = try  NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsUrl, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
+            let directoryUrls = try  FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions())
             
-            documentURLs = directoryUrls.filter(){ $0.pathExtension! == "mp4" || $0.pathExtension! == "mov" }
-            mediaInDocumentsFolder = documentURLs.map{ $0.lastPathComponent! }
+            documentURLs = directoryUrls.filter(){ $0.pathExtension == "mp4" || $0.pathExtension == "mov" }
+            mediaInDocumentsFolder = documentURLs.map{ $0.lastPathComponent }
         } catch let error as NSError {
             print(error.localizedDescription)
         }
@@ -73,7 +73,7 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
     
 
     // MARK: - Table view data source
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             return "Bundled"
         } else {
@@ -81,11 +81,11 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (section == 0) {
             return mediaInBundle.count
         } else {
@@ -94,8 +94,8 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    func getMovieMetaData(url: NSURL)-> String {
-        let asset = AVURLAsset(URL: url)
+    func getMovieMetaData(_ url: URL)-> String {
+        let asset = AVURLAsset(url: url)
         //let commonMetaData = asset.commonMetadata
         let durationInSeconds = Int(CMTimeGetSeconds(asset.duration))
         let data:String = ("\(durationInSeconds/60) minutes \(durationInSeconds%60) seconds")
@@ -103,8 +103,8 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         return data
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FilenameCell", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FilenameCell", for: indexPath)
     
         if (indexPath.section == 0 ) {
             cell.textLabel?.text = mediaInBundle[indexPath.row] as String
@@ -117,20 +117,20 @@ class VideoSelectViewController: UIViewController, UITableViewDataSource, UITabl
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the URL for the selected video & save it.
-        var mediaURL : NSURL
+        var mediaURL : URL
         if (indexPath.section == 0) {
-            mediaURL  = bundleURLs[indexPath.row] as NSURL
+            mediaURL  = bundleURLs[indexPath.row] as URL
             selectedMediaLabel.text = mediaInBundle[indexPath.row] as String
         } else {
-            mediaURL  = documentURLs[indexPath.row] as NSURL
+            mediaURL  = documentURLs[indexPath.row] as URL
             selectedMediaLabel.text = mediaInDocumentsFolder[indexPath.row] as String
         }
         
         //print("url \(mediaURL)")
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(mediaURL.path, forKey: PulseConstants.Preferences.mediaKeyPref)
+        let defaults = UserDefaults.standard
+        defaults.set(mediaURL.path, forKey: PulseConstants.Preferences.mediaKeyPref)
     }
 }
