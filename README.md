@@ -13,6 +13,6 @@ The proof concept did have a rather nice video made by a professional film maker
 
 It does need more work on the:
 
-error handling
-UI
+* error handling
+* UI
 
