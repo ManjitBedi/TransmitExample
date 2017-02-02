@@ -4,7 +4,7 @@ This code was a proof of concept for an app project that did not materialze.  I 
 
 When the project started, it was one of my first real projects coded in Swift; the coding started in December 2016.  It could use a good code review & I just updated the project to be Swift 3 compliant.
 
-What does this app do?  It lets you play viideo and sent haptic events to sync'ed iOS devies; the idea being that something happens in the video & you can send recieve an haptic event on your iDevice.
+What does this app do?  It lets you play video and sent haptic events to sync'ed iOS devies; the idea being that something happens in the video & you can send recieve an haptic event on your iDevice.
 
 The app uses frameworks for:
  * peer to peer networking
