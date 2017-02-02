@@ -24,11 +24,11 @@ class DemoViewController: UIViewController {
     
     var player : AVPlayer = AVPlayer()
     var syncData : NSString = ""
-    var syncArray : [NSString] = []
+    var syncArray : [String] = []
     var times : [NSValue] = []
     var videoPath : String?
     var vibrations: Bool = true
-    var nf: NumberFormatter = NumberFormatter()
+    let nf: NumberFormatter = NumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +48,7 @@ class DemoViewController: UIViewController {
             videoPath = path! as String
         }
         
-        self.vibrations = defaults.bool(forKey: PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
+        self.vibrations = defaults.bool(forKey: PulseConstants.Preferences.vibrationsOnKeyPref) 
         
         print ("vibrations \(self.vibrations)")
         print("Load video with name \"\(videoPath)\"")
@@ -132,9 +132,11 @@ class DemoViewController: UIViewController {
             
             // convert the strings to time and then encode the times as an NSValue to then add to an array of time values
             for timeString in syncArray {
-                let cmTime = CMTimeMake(timeString.longLongValue, 10000)
-                let cmValue = NSValue(time: cmTime)
-                tempArray.add(cmValue)
+                if let time = Int64(timeString) {
+                    let cmTime = CMTimeMake(time, 10000)
+                    let cmValue = NSValue(time: cmTime)
+                    tempArray.add(cmValue)
+                }
             }
             
             self.times = tempArray as NSArray as! [NSValue]
@@ -201,7 +203,7 @@ class DemoViewController: UIViewController {
     
     func getTrackInfo(_ musicSequence:MusicSequence, trackNumber:UInt32) -> (length: MusicTimeStamp, events:[NSValue]) {
         var track: MusicTrack? = nil
-        let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.allocate(capacity: 1)
+        let trackPointer = UnsafeMutablePointer<MusicTrack?>.allocate(capacity: 1)
         var status = MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
         var times:[NSValue] = []
         
@@ -215,10 +217,11 @@ class DemoViewController: UIViewController {
         
         var trackLength = MusicTimeStamp(0)
         var tracklengthSize = UInt32(0)
-        status = MusicTrackGetProperty(track,
+        status = MusicTrackGetProperty(track!,
             UInt32(kSequenceTrackProperty_TrackLength),
             &trackLength,
             &tracklengthSize)
+        
         if status != OSStatus(noErr) {
             print("Error getting track length \(status)")
             return (0.0, times)
@@ -246,9 +249,9 @@ class DemoViewController: UIViewController {
         var timestamp : MusicTimeStamp = 0
         var eventType : MusicEventType = 0
         var eventDataSize: UInt32 = 0
-        let eventData: UnsafeMutablePointer<UnsafeRawPointer> = UnsafeMutablePointer.allocate(capacity: 1)
+        var eventData: UnsafeRawPointer? = nil
         
-        status = MusicEventIteratorHasCurrentEvent(iterator, &hasNext);
+        status = MusicEventIteratorHasCurrentEvent(iterator!, &hasNext);
         
         // This would be strange if it happened.
         // It would mean the track has a duration but nothng in it...
@@ -261,7 +264,7 @@ class DemoViewController: UIViewController {
             MusicEventIteratorGetEventInfo(iterator!,
                 &timestamp,
                 &eventType,
-                eventData,
+                &eventData,
                 &eventDataSize);
             
             // TODO: check the event type is a marker
@@ -305,28 +308,26 @@ class DemoViewController: UIViewController {
     }
     
     fileprivate func createSyncEvents(_ player: AVPlayer) {
-        nf = NumberFormatter()
         nf.numberStyle = NumberFormatter.Style.decimal
         nf.maximumFractionDigits = 2
         nf.minimumFractionDigits = 2
-        
         print("vibrate on playing device: \(vibrations)")
-        
         player.addBoundaryTimeObserver(forTimes: self.times, queue: DispatchQueue.main, using: { [weak nf] in
-                let timeInSeconds : Float64  =  CMTimeGetSeconds(player.currentTime())
+            let timeInSeconds = CMTimeGetSeconds(player.currentTime())
+            let number = NSNumber(value: Double(timeInSeconds))
             
-                if let timeString = nf!.string(from: NSNumber(timeInSeconds)) {
-                    print("sync event at time \(timeString)");
+            if let timeString = nf!.string(from: number) {
+                print("sync event at time \(timeString)");
+            }
+        
+            if self.vibrations {
+                DispatchQueue.main.async {
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                 }
-            
-                if self.vibrations {
-                    DispatchQueue.main.async {
-                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-                    }
-                }
-            
-                self.connectionManager!.broadcastEvent()
-            })
+            }
+        
+            self.connectionManager!.broadcastEvent()
+        })
     }
     
     
@@ -351,7 +352,7 @@ class DemoViewController: UIViewController {
             readInSyncDataText()
         }
         
-        self.vibrations = defaults.bool(forKey: PulseConstants.Preferences.vibrationsOnKeyPref) ?? true
+        self.vibrations = defaults.bool(forKey: PulseConstants.Preferences.vibrationsOnKeyPref) 
     }
     
      // MARK: - Navigation
@@ -365,7 +366,7 @@ class DemoViewController: UIViewController {
             return String(format: "%.03f", CMTimeGetSeconds(time))
         }
 
-        timeCodeVC.syncArray = timeStrings as [NSString]
+        timeCodeVC.syncArray = timeStrings as [String]
      }
 }
 

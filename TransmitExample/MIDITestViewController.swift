@@ -111,7 +111,7 @@ class MIDITestViewController: UIViewController {
             // We only want there to be one track in the sequence!
             if (numberOfTracks > 1) {
                 for i:UInt32 in 1 ..< numberOfTracks {
-                    self.getTrackInfo(musicSequence!, trackNumber: i)
+                   _ = self.getTrackInfo(musicSequence!, trackNumber: i)
                 }
             }
                 
@@ -126,7 +126,7 @@ class MIDITestViewController: UIViewController {
     // and report on the events in the track
     func getTrackInfo(_ musicSequence:MusicSequence, trackNumber:UInt32) -> String {
         var track : MusicTrack? = nil
-        let trackPointer: UnsafeMutablePointer<MusicTrack> = UnsafeMutablePointer.allocate(capacity: 1)
+        let trackPointer = UnsafeMutablePointer<MusicTrack?>.allocate(capacity: 1)
         MusicSequenceGetIndTrack(musicSequence, trackNumber, trackPointer)
         track = trackPointer.pointee
         trackPointer.deallocate(capacity: 1)
@@ -158,7 +158,7 @@ class MIDITestViewController: UIViewController {
         var timestamp : MusicTimeStamp = MusicTimeStamp(0)
         var eventType : MusicEventType = MusicEventType(0)
         var eventDataSize: UInt32 = 0
-        let eventData: UnsafeMutablePointer<UnsafeRawPointer>? = nil
+        var eventData: UnsafeRawPointer? = nil
         
         // Iterate through the events in the MIDI track
         MusicEventIteratorHasCurrentEvent(iterator!, &hasNext);
@@ -166,7 +166,7 @@ class MIDITestViewController: UIViewController {
             status = MusicEventIteratorGetEventInfo(iterator!,
                 &timestamp,
                 &eventType,
-                eventData,
+                &eventData,
                 &eventDataSize);
             
             if status != OSStatus(noErr) {

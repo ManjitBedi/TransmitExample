@@ -11,7 +11,7 @@ import UIKit
 
 class TimeCodeTableViewController: UITableViewController {
 
-    internal var syncArray: [NSString] = []
+    internal var syncArray: [String] = []
     var videoPath : String = "'"
 
     override func viewDidLoad() {

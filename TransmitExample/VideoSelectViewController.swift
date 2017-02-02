@@ -15,14 +15,37 @@
 import UIKit
 import AVFoundation
 
+// from Stack Overflow:
+// http://stackoverflow.com/questions/26707352/how-to-split-filename-from-file-extension-in-swift
+extension String {
+    
+    func fileName() -> String {
+        
+        if let fileNameWithoutExtension = NSURL(fileURLWithPath: self).deletingPathExtension?.lastPathComponent {
+            return fileNameWithoutExtension
+        } else {
+            return ""
+        }
+    }
+    
+    func fileExtension() -> String {
+        
+        if let fileExtension = NSURL(fileURLWithPath: self).pathExtension {
+            return fileExtension
+        } else {
+            return ""
+        }
+    }
+}
+
 class VideoSelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var selectedMediaLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
     weak var connectionManager = ConnectionManager.sharedManager
-    var mediaInBundle: [NSString] = []
-    var mediaInDocumentsFolder: [NSString] = []
+    var mediaInBundle: [String] = []
+    var mediaInDocumentsFolder: [String] = []
     var bundleURLs: [URL] = []
     var documentURLs: [URL] = []
     
